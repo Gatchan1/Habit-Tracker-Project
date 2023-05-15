@@ -33,7 +33,6 @@ router.post("/signup", isLoggedOut, (req, res) => {
   // Check that username, email, and password are provided
   if (username === "" || email === "" || password === "" || passwordRepeat === "") {
     signUpData.errorMessage = "All fields are mandatory. Please fill out every blank field and try again"
-
     res.render("auth/signup", signUpData);
 
     return;
@@ -55,12 +54,12 @@ router.post("/signup", isLoggedOut, (req, res) => {
 
   //   ! This regular expression checks password for special characters and minimum length
   
-  const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+/*   const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
   if (!regex.test(password)) {
     signUpData.errorMessage = "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter."
     res.render("auth/signup", signUpData);
     return;
-  }
+  } */
  
 
   // Create a new user - start by hashing the password
@@ -95,13 +94,13 @@ router.get("/login", isLoggedOut, (req, res) => {
 
 // POST /auth/login
 router.post("/login", isLoggedOut, (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { username, password } = req.body;
 
   // Check that username, email, and password are provided
-  if (username === "" || email === "" || password === "") {
+  if (username === "" || password === "") {
     res.status(400).render("auth/login", {
       errorMessage:
-        "All fields are mandatory. Please provide username, email and password.",
+        "Both fields are mandatory. Please provide username and password.",
     });
 
     return;
@@ -111,12 +110,12 @@ router.post("/login", isLoggedOut, (req, res, next) => {
   // - either length based parameters or we check the strength of a password
   if (password.length < 6) {
     return res.status(400).render("auth/login", {
-      errorMessage: "Your password needs to be at least 6 characters long.",
+      errorMessage: "Wrong password; passwords have to be at least 6 characters long.",
     });
   }
 
   // Search the database for a user with the email submitted in the form
-  User.findOne({ email })
+  User.findOne({ username })
     .then((user) => {
       // If the user isn't found, send an error message that user provided wrong credentials
       if (!user) {
