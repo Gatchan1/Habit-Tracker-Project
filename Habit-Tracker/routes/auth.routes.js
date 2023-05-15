@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 
 // How many rounds should bcrypt run the salt (default - 10 rounds)
-const saltRounds = 10;
+const saltRounds = 12; // I've changed it to 12 (Raquel)
 
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
@@ -22,38 +22,46 @@ router.get("/signup", isLoggedOut, (req, res) => {
 
 // POST /auth/signup
 router.post("/signup", isLoggedOut, (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, passwordRepeat } = req.body;
+  const signUpData = {
+    username,
+    email,
+    password,
+    passwordRepeat,
+  };
 
   // Check that username, email, and password are provided
-  if (username === "" || email === "" || password === "") {
-    res.status(400).render("auth/signup", {
-      errorMessage:
-        "All fields are mandatory. Please provide your username, email and password.",
-    });
+  if (username === "" || email === "" || password === "" || passwordRepeat === "") {
+    signUpData.errorMessage = "All fields are mandatory. Please fill out every blank field and try again"
+
+    res.render("auth/signup", signUpData);
+
+    return;
+  }
+
+  if (password != passwordRepeat) {
+    signUpData.errorMessage = "Both the password and the repeat password must be the same."
+    res.render("auth/signup", signUpData);
 
     return;
   }
 
   if (password.length < 6) {
-    res.status(400).render("auth/signup", {
-      errorMessage: "Your password needs to be at least 6 characters long.",
-    });
+    signUpData.errorMessage = "Your password needs to be at least 6 characters long."
+    res.render("auth/signup", signUpData);
 
     return;
   }
 
   //   ! This regular expression checks password for special characters and minimum length
-  /*
+  
   const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
   if (!regex.test(password)) {
-    res
-      .status(400)
-      .render("auth/signup", {
-        errorMessage: "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter."
-    });
+    signUpData.errorMessage = "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter."
+    res.render("auth/signup", signUpData);
     return;
   }
-  */
+ 
 
   // Create a new user - start by hashing the password
   bcrypt
@@ -64,7 +72,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
       return User.create({ username, email, password: hashedPassword });
     })
     .then((user) => {
-      res.redirect("/auth/login");
+      res.redirect("/login");
     })
     .catch((error) => {
       if (error instanceof mongoose.Error.ValidationError) {
