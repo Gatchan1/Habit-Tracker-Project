@@ -17,7 +17,7 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 
 // GET /auth/signup
 router.get("/signup", isLoggedOut, (req, res) => {
-  res.render("auth/signup", {layout: 'layout2'});
+  res.render("auth/signup", {layout: '/layouts/layout2'});
 });
 
 // POST /auth/signup
@@ -33,7 +33,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
   // Check that username, email, and password are provided
   if (username === "" || email === "" || password === "" || passwordRepeat === "") {
     signUpData.errorMessage = "All fields are mandatory. Please fill out every blank field and try again"
-    signUpData.layout = "layout2"
+    signUpData.layout = "/layouts/layout2"
 
     res.render("auth/signup", signUpData);
 
@@ -42,7 +42,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
 
   if (password != passwordRepeat) {
     signUpData.errorMessage = "Both the password and the repeat password must be the same."
-    signUpData.layout = "layout2"
+    signUpData.layout = "/layouts/layout2"
 
     res.render("auth/signup", signUpData);
 
@@ -51,7 +51,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
 
   if (password.length < 6) {
     signUpData.errorMessage = "Your password needs to be at least 6 characters long."
-    signUpData.layout = "layout2"
+    signUpData.layout = "/layouts/layout2"
 
     res.render("auth/signup", signUpData);
 
@@ -63,13 +63,14 @@ router.post("/signup", isLoggedOut, (req, res) => {
 /*   const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
   if (!regex.test(password)) {
     signUpData.errorMessage = "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter."
-    res.render("auth/signup", signUpData, {layout: 'layout2'});
+    res.render("auth/signup", signUpData, {layout: '/layouts/layout2'});
     return;
   } */
  
   User.findOne({username})
   .then(user => {
     if (user) {
+      signUpData.layout = '/layouts/layout2'
       signUpData.errorMessage = "Username already exists";
       res.render("auth/signup", signUpData);
       return;
@@ -85,7 +86,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
       return User.create({ username, email, password: hashedPassword });
     })
     .then((user) => {
-      res.render("auth/login", {layout: 'layout2'});
+      res.render("auth/login", {layout: '/layouts/layout2'});
     })
     .catch((error) => {
       if (error instanceof mongoose.Error.ValidationError) {
@@ -104,7 +105,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
 
 // GET /auth/login
 router.get("/login", isLoggedOut, (req, res) => {
-  res.render("auth/login", {layout: 'layout2'});
+  res.render("auth/login", {layout: '/layouts/layout2'});
 });
 
 // POST /auth/login
@@ -115,7 +116,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
   if (username === "" || password === "") {
     res.status(400).render("auth/login", {
       errorMessage:
-        "All fields are mandatory. Please provide username, email and password.", layout: 'layout2'});
+        "All fields are mandatory. Please provide username, email and password.", layout: '/layouts/layout2'});
 
     return;
   }
@@ -124,7 +125,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
   // - either length based parameters or we check the strength of a password
   if (password.length < 6) {
     return res.status(400).render("auth/login", {
-      errorMessage: "Your password needs to be at least 6 characters long.", layout: 'layout2'});
+      errorMessage: "Your password needs to be at least 6 characters long.", layout: '/layouts/layout2'});
   }
 
   // Search the database for a user with the email submitted in the form
@@ -134,7 +135,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
       if (!user) {
         res
           .status(400)
-          .render("auth/login", { errorMessage: "Wrong credentials.", layout: 'layout2'});
+          .render("auth/login", { errorMessage: "Wrong credentials.", layout: '/layouts/layout2'});
         return;
       }
 
@@ -145,7 +146,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
           if (!isSamePassword) {
             res
               .status(400)
-              .render("auth/login", { errorMessage: "Wrong credentials.", layout: 'layout2'});
+              .render("auth/login", { errorMessage: "Wrong credentials.", layout: '/layouts/layout2'});
             return;
           }
 
@@ -165,7 +166,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 router.get("/logout", isLoggedIn, (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      res.status(500).render("auth/logout", {errorMessage: err.message, layout: 'layout2'});
+      res.status(500).render("auth/logout", {errorMessage: err.message, layout: '/layouts/layout2'});
       return;
     }
 
