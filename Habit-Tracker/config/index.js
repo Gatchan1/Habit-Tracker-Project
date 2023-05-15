@@ -23,11 +23,11 @@ const session = require("express-session");
 
 // ℹ️ MongoStore in order to save the user session in the database
 // https://www.npmjs.com/package/connect-mongo
-const MongoStore = require("connect-mongo");
+const mongoStore = require("connect-mongo");
 
 // Connects the mongo uri to maintain the same naming structure
 const MONGO_URI =
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/Habit-Tracker";
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/habit-tracker"; //lowercased
 
 // Middleware configuration
 module.exports = (app) => {
@@ -52,14 +52,17 @@ module.exports = (app) => {
   );
 
   // ℹ️ Middleware that adds a "req.session" information and later to check that you are who you say you are 😅
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET || "super hyper secret key",
-      resave: false,
-      saveUninitialized: false,
-      store: MongoStore.create({
-        mongoUrl: MONGO_URI,
-      }),
-    })
-  );
+  app.set("trust proxy", 1); // Previously we didn't have the cookie object (Raquel)
+    app.use(session({
+        secret: process.env.SESSION_SECRET,
+        resave: true,
+        saveUninitialized: false,
+        cookie: {
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            secure: process.env.NODE_ENV === "production",
+            httpOnly: true,
+            maxAge: 60000
+        },
+        store: mongoStore.create({mongoUrl:process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/habit-tracker"}) // I changed this route here (Raquel)
+    }));
 };
