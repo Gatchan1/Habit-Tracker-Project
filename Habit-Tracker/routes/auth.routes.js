@@ -17,7 +17,7 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 
 // GET /auth/signup
 router.get("/signup", isLoggedOut, (req, res) => {
-  res.render("auth/signup");
+  res.render("auth/signup", {layout: 'layout2'});
 });
 
 // POST /auth/signup
@@ -34,21 +34,21 @@ router.post("/signup", isLoggedOut, (req, res) => {
   if (username === "" || email === "" || password === "" || passwordRepeat === "") {
     signUpData.errorMessage = "All fields are mandatory. Please fill out every blank field and try again"
 
-    res.render("auth/signup", signUpData);
+    res.render("auth/signup", signUpData, {layout: 'layout2'});
 
     return;
   }
 
   if (password != passwordRepeat) {
     signUpData.errorMessage = "Both the password and the repeat password must be the same."
-    res.render("auth/signup", signUpData);
+    res.render("auth/signup", signUpData, {layout: 'layout2'});
 
     return;
   }
 
   if (password.length < 6) {
     signUpData.errorMessage = "Your password needs to be at least 6 characters long."
-    res.render("auth/signup", signUpData);
+    res.render("auth/signup", signUpData, {layout: 'layout2'});
 
     return;
   }
@@ -58,7 +58,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
   const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
   if (!regex.test(password)) {
     signUpData.errorMessage = "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter."
-    res.render("auth/signup", signUpData);
+    res.render("auth/signup", signUpData, {layout: 'layout2'});
     return;
   }
  
@@ -72,7 +72,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
       return User.create({ username, email, password: hashedPassword });
     })
     .then((user) => {
-      res.redirect("/login");
+      res.redirect("/login", {layout: 'layout2'});
     })
     .catch((error) => {
       if (error instanceof mongoose.Error.ValidationError) {
@@ -81,7 +81,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
         res.status(500).render("auth/signup", {
           errorMessage:
             "Username and email need to be unique. Provide a valid username or email.",
-        });
+        }, {layout: 'layout2'});
       } else {
         next(error);
       }
@@ -90,7 +90,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
 
 // GET /auth/login
 router.get("/login", isLoggedOut, (req, res) => {
-  res.render("auth/login");
+  res.render("auth/login", {layout: 'layout2'});
 });
 
 // POST /auth/login
@@ -102,7 +102,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     res.status(400).render("auth/login", {
       errorMessage:
         "All fields are mandatory. Please provide username, email and password.",
-    });
+    }, {layout: 'layout2'});
 
     return;
   }
@@ -112,7 +112,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
   if (password.length < 6) {
     return res.status(400).render("auth/login", {
       errorMessage: "Your password needs to be at least 6 characters long.",
-    });
+    }, {layout: 'layout2'});
   }
 
   // Search the database for a user with the email submitted in the form
@@ -122,7 +122,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
       if (!user) {
         res
           .status(400)
-          .render("auth/login", { errorMessage: "Wrong credentials." });
+          .render("auth/login", { errorMessage: "Wrong credentials." }, {layout: 'layout2'});
         return;
       }
 
@@ -133,7 +133,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
           if (!isSamePassword) {
             res
               .status(400)
-              .render("auth/login", { errorMessage: "Wrong credentials." });
+              .render("auth/login", { errorMessage: "Wrong credentials." }, {layout: 'layout2'});
             return;
           }
 
@@ -153,7 +153,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 router.get("/logout", isLoggedIn, (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      res.status(500).render("auth/logout", { errorMessage: err.message });
+      res.status(500).render("auth/logout", { errorMessage: err.message }, {layout: 'layout2'});
       return;
     }
 
