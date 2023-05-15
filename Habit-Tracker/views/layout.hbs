@@ -18,7 +18,7 @@
     {{! Navbar from Bootstrap }}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar scroll</a>
+        <a class="navbar-brand" href="/profile">Overview</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -36,10 +36,10 @@
             style="--bs-scroll-height: 100px;"
           >
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" aria-current="page" href="#">Habits</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
+              <a class="nav-link" href="#">Groups</a>
             </li>
             <li class="nav-item dropdown">
               <a
@@ -50,36 +50,37 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Link
+                More
               </a>
               <ul
                 class="dropdown-menu"
                 aria-labelledby="navbarScrollingDropdown"
               >
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Friends</a></li>
+                <li><a class="dropdown-item" href="#">Habits</a></li>
+                <li><a class="dropdown-item" href="#">Groups</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item" href="#">Log out</a></li>
               </ul>
             </li>
-            <li class="nav-item">
+            {{!-- <li class="nav-item">
               <a
                 class="nav-link disabled"
                 href="#"
                 tabindex="-1"
                 aria-disabled="true"
               >Link</a>
-            </li>
+            </li> --}}
           </ul>
           <form class="d-flex">
             <input
               class="form-control me-2"
               type="search"
-              placeholder="Search"
+              placeholder="Search users"
               aria-label="Search"
             />
             <button
-              class="btn btn-outline-success"
+              class="btn btn-primary"
               type="submit"
             >Search</button>
           </form>
