@@ -28,11 +28,43 @@ h1.homeTitle{
 }
 
 nav{
-  margin: 0;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 5px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
+
+.logo a{
+  text-decoration: none;
+  font-size: 20px;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+}
+
+input{
+  padding: 10px 40px;
+  text-align: start;
+  margin: 5px;
+  border-radius: 5px;
+  border-style:groove;
+  border-color: #00b7ff;
+
+}
+
+.createHabit{
+  border-radius: 5px;
+  border-style: groove;
+  padding: 10px 20px;
+  border-color: #00b7ff;
+}
 .error {
   background-color: rgb(255, 139, 139);
 }
+
+

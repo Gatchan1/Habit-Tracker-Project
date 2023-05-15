@@ -17,4 +17,8 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
     })
 });
 
+router.get('/habit/create', (req, res, next) => {
+    res.render('createHabit', {layout: 'layout2'})
+})
+
 module.exports = router;
