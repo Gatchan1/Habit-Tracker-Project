@@ -33,3 +33,6 @@ nav{
   flex-direction: row;
   justify-content: space-between;
 }
+.error {
+  background-color: rgb(255, 139, 139);
+}
