@@ -33,7 +33,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
   // Check that username, email, and password are provided
   if (username === "" || email === "" || password === "" || passwordRepeat === "") {
     signUpData.errorMessage = "All fields are mandatory. Please fill out every blank field and try again"
-    signUpData.layout = layout2
+    signUpData.layout = "layout2"
 
     res.render("auth/signup", signUpData);
 
@@ -42,7 +42,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
 
   if (password != passwordRepeat) {
     signUpData.errorMessage = "Both the password and the repeat password must be the same."
-    signUpData.layout = layout2
+    signUpData.layout = "layout2"
 
     res.render("auth/signup", signUpData);
 
@@ -51,7 +51,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
 
   if (password.length < 6) {
     signUpData.errorMessage = "Your password needs to be at least 6 characters long."
-    signUpData.layout = layout2
+    signUpData.layout = "layout2"
 
     res.render("auth/signup", signUpData);
 
@@ -67,6 +67,14 @@ router.post("/signup", isLoggedOut, (req, res) => {
     return;
   } */
  
+  User.findOne({username})
+  .then(user => {
+    if (user) {
+      signUpData.errorMessage = "Username already exists";
+      res.render("auth/signup", signUpData);
+      return;
+    }
+  })
 
   // Create a new user - start by hashing the password
   bcrypt
@@ -77,19 +85,10 @@ router.post("/signup", isLoggedOut, (req, res) => {
       return User.create({ username, email, password: hashedPassword });
     })
     .then((user) => {
-      res.redirect("/login", {layout: 'layout2'});
+      res.render("auth/login", {layout: 'layout2'});
     })
     .catch((error) => {
-      if (error instanceof mongoose.Error.ValidationError) {
-        res.status(500).render("auth/signup", { errorMessage: error.message });
-      } else if (error.code === 11000) {
-        res.status(500).render("auth/signup", {
-          errorMessage:
-            "Username and email need to be unique. Provide a valid username or email.",
-        layout: 'layout2'});
-      } else {
-        next(error);
-      }
+        next(error)
     });
 });
 
