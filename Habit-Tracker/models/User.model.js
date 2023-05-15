@@ -24,7 +24,8 @@ const userSchema = new Schema(
       type: String,
       default: __dirname + "/images/default.png"
     },
-    habits: [{ type: Schema.Types.ObjectId, ref: "Habit" }]
+    habits: [{ type: Schema.Types.ObjectId, ref: "Habit"}],
+    friends: [{ type: Schema.Types.ObjectId, ref: "User"}]
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

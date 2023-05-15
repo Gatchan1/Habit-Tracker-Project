@@ -10,7 +10,7 @@ const { Schema, model } = require("mongoose");
         
         datesCompleted: [Date],
         
-        groupOfUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],
+        groupOfUsers: [{ type: Schema.Types.ObjectId, ref: "User" }], //the 
         
         private: Boolean
         });

@@ -88,7 +88,17 @@ router.post("/signup", isLoggedOut, (req, res) => {
       res.render("auth/login", {layout: 'layout2'});
     })
     .catch((error) => {
-        next(error)
+      if (error instanceof mongoose.Error.ValidationError) {
+        res.status(500).render("auth/signup", { errorMessage: error.message });
+      } else if (error.code === 11000) {
+        console.log("yes, this is the error")
+        res.status(500).render("auth/signup", {          
+          errorMessage:
+            "Username and email need to be unique. Provide a valid username or email.",
+        });
+      } else {
+        next(error);
+      }
     });
 });
 
