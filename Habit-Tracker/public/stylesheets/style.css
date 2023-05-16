@@ -86,3 +86,6 @@ img.img-thumbnail{
   flex-direction: row;
 }
 
+.btn-disabled {
+  background-color: rgb(192, 255, 234);
+}
