@@ -11,6 +11,7 @@ const Habit = require('../models/Habit.model');
 //Should be protected to be accessed only by logged in user and only for user with username
 router.get("/profile", isLoggedIn, (req, res, next) => {
     User.findOne(req.session.currentUser)
+    .populate("habits")
     .then((user) => {
         let data = user;
         console.log(data)
