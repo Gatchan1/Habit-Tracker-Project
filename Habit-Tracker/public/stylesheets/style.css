@@ -48,6 +48,7 @@ div.createHabit form{
 
 form{
   text-align: left;
+  margin-left: 150px;
 }
 
 input{
@@ -66,13 +67,18 @@ input{
   padding: 10px 20px;
   border-color: #00b7ff;
 }
+
+.descriptionHabit{
+  padding: 0 100px 150px 100px;
+}
+
 .error {
   background-color: rgb(255, 139, 139);
 }
 
 img.img-thumbnail{
-  width: 50px;
-  height: 10px;
+  width: 200px;
+
 }
 
 .profile-top-section {
