@@ -45,10 +45,30 @@ router.post("/habit/create", (req, res, next) => {
     private,
   };
   Habit.create(newHabit)
-    .then((habit) => {
-      console.log("New habit saved:", habit);
-      return User.findByIdAndUpdate(req.session.currentUser._id, { $push: { habits: habit._id } });
-      // return User.findById(req.session.currentUser._id)
+  .then(habit => {
+    console.log('New habit saved:', habit);
+    return User.findByIdAndUpdate(req.session.currentUser._id, { $push: { habits: habit._id }})
+    
+  })
+  
+  .then(() => {
+    res.redirect('/profile');
+   })
+
+  .then((userInfo) => {
+      console.log(userInfo)
+     }) 
+
+  .catch(err => {
+    next(err)
+   })
+  })  
+
+
+router.get("/profile/edit", isLoggedIn, (req, res, next) => {
+    User.findOne(req.session.currentUser)
+    .then(user => {
+        res.render("edit-profile", user)
     })
 
     .then((user) => {
@@ -90,9 +110,9 @@ router.post("/habits/:habitId", (req, res, next) => {
 });
 
 //Route to other users' public profiles
-router.get("/:username", (req, res, next) => {
-  let { username } = req.params;
-  User.findOne({ username: "username" })
+router.get('/:username', (req, res, next) => {
+   let {username} = req.params;
+    User.findOne({username})
     .then((user) => {
       res.render("public-profile", user);
     })
@@ -108,12 +128,33 @@ router.get("/testing", (req, res, next) => {
 });
 
 router.post("/testing", (req, res, next) => {
-  let checkHabit = req.body;
-  console.log("cheeeeeeeeeeeeck: ", checkHabit);
+  let checkHabit = req.body
+  console.log("cheeeeeeeeeeeeck: ", checkHabit)
 
-  res.render("testing");
+  
+  res.render("testing")
+})
+/////////////////////////////////////////
+
+
+router.post('/search', (req, res, next) => {
+  const searchQuery = req.body.userSearch; 
+  console.log(searchQuery)
+
+  User.find({ username: { $regex: searchQuery, $options: 'i' } })
+    .then((users) => {
+      console.log('user response:', users);
+      const username = users[0].username
+      res.redirect(`/${username}`);
+    })
+    .catch((err) => {
+      next(err);
+    });
 });
 
-/////////////////////////////////////////
+
+
+
+
 
 module.exports = router;
