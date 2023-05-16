@@ -9,12 +9,25 @@
 
     <h1>Welcome, {{username}}</h1>
 </div>
-<section id="overview" class="container-fluid">
+<section id="overview" class="container-fluid mt-5">
+    <h2>Overview</h2>
     
 </section>
-<section id="habits" class="container-fluid">
+<section id="habits" class="container-fluid mt-5">
+    <h2>Habits</h2>
+{{!-- for each item in the array habbits (from data), create a display of the habit name and the done button --}}
 
+{{#each habit}}
+<form action="/habits/{{id}}" method="POST">
+  <div class="mb-3">
+   {{this.title}}
+  </div>
+  <button type="submit" class="btn btn-primary">Done!</button>
+</form>
+{{/each}}
 </section>
-<section id="groups" class="container-fluid">
+
+<section id="groups" class="container-fluid mt-5">
+    <h2>Groups</h2>
 
 </section>

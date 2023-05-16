@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const User = require("../models/User.model");
+// Handles Luxon (time dates management)
+const { DateTime } = require("luxon")
 
 
 const isLoggedIn = require("../middleware/isLoggedIn");
@@ -11,6 +13,7 @@ const Habit = require('../models/Habit.model');
 //Should be protected to be accessed only by logged in user and only for user with username
 router.get("/profile", isLoggedIn, (req, res, next) => {
     User.findOne(req.session.currentUser)
+    .populate("habits")
     .then((user) => {
         let data = user;
         console.log(data)
@@ -63,13 +66,48 @@ router.get("/profile/edit", isLoggedIn, (req, res, next) => {
     .catch((err) => next(err))
 })
 
-router.get('/group-list', isLoggedIn, (req, res, next) => {
-    res.render('groupList', {layout: 'layout'})
+
+
+
+router.post("/habit/:habitId", (req, res, next) => {
+  let habitId = req.params.habitId
+  Habit.findOne(habitId)
+  .then((habit) => {
+    let now = DateTime.now().toISODate()
+    let newDatesCompleted = habit.datesCompleted.push(now)
+    Habit.findByIdAndUpdate(habitId, {datesCompleted: newDatesCompleted}, { new: true })
+  })
+  .then((updatedHabit) => {
+    console.log(updatedHabit)
+    res.redirect("/profile")
+  })
+  .catch((err) => next(err))
 })
 
-router.get('/:id/habit', isLoggedIn, (req, res, next) => {
-  res.render('groupHabit', {layout: 'layout'})
+
+
+
+
+
+////////////   TEST ROUTES!!!! only for testing   //////////////////////////
+
+router.get("/testing", (req, res, next) => {
+  const now = DateTime.now().toISODate();
+  console.log("date: ", now)
+  res.render("testing")
 })
+
+router.post("/testing", (req, res, next) => {
+  let checkHabit = req.body
+  console.log("cheeeeeeeeeeeeck: ", checkHabit)
+
+
+  res.render("testing")
+})
+
+/////////////////////////////////////////
+
+
 
 
 module.exports = router;
