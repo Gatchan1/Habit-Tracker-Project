@@ -12,14 +12,13 @@ const Habit = require('../models/Habit.model');
 /* GET user profile*/
 //Should be protected to be accessed only by logged in user and only for user with username
 router.get("/profile", isLoggedIn, (req, res, next) => {
-    User.findOne(req.session.currentUser)
-    .populate("habits")
-    .then((user) => {
-        let data = user;
-        console.log(data)
-        res.render("profile", data);
-    })
-    .catch((err) => next(err))
+  User.findOne({_id: req.session.currentUser._id})
+  .populate("habits")
+  .then((user) => {
+      let data = user;
+      res.render("profile", data);
+  })
+  .catch((err) => next(err))
 });
 
 router.get('/habit/create', isLoggedIn, (req, res, next) => {
@@ -67,15 +66,14 @@ router.get("/profile/edit", isLoggedIn, (req, res, next) => {
 })
 
 
-
-
-router.post("/habit/:habitId", (req, res, next) => {
+router.post("/habits/:habitId", (req, res, next) => {
   let habitId = req.params.habitId
-  Habit.findOne(habitId)
+  Habit.findOne({_id: habitId})
   .then((habit) => {
+    let datesCompleted = habit.datesCompleted
     let now = DateTime.now().toISODate()
-    let newDatesCompleted = habit.datesCompleted.push(now)
-    Habit.findByIdAndUpdate(habitId, {datesCompleted: newDatesCompleted}, { new: true })
+    datesCompleted.push(now)
+    return Habit.findByIdAndUpdate(habitId, {datesCompleted}, {new: true})
   })
   .then((updatedHabit) => {
     console.log(updatedHabit)

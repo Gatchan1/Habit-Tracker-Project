@@ -10,9 +10,9 @@ const { Schema, model } = require("mongoose");
         
         description: String,
         
-        datesCompleted: [Date],
+        datesCompleted: [{ type: String }],
         
-        groupOfUsers: [{ type: Schema.Types.ObjectId, ref: "User" }], //the 
+        groupOfUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],
         
         private: Boolean
         });
