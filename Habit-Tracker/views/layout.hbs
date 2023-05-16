@@ -72,10 +72,11 @@
               >Link</a>
             </li> --}}
           </ul>
-          <form class="d-flex">
+          <form class="d-flex" action="/search" method="POST">
             <input
               class="form-control me-2"
               type="search"
+              name="userSearch"
               placeholder="Search users"
               aria-label="Search"
               id="search"
@@ -89,7 +90,7 @@
       </div>
     </nav>
     {{! Navbar from Bootstrap }}
-
+    
     {{{body}}}
 
     <script

@@ -84,8 +84,8 @@ router.post("/habit/:habitId", (req, res, next) => {
 
 //Route to other users' public profiles
 router.get('/:username', (req, res, next) => {
-   let  {username} = req.params;
-    User.findOne({username: 'username'})
+   let {username} = req.params;
+    User.findOne({username})
     .then((user) => {
         res.render("public-profile", user)
     })
@@ -106,29 +106,28 @@ router.post("/testing", (req, res, next) => {
   let checkHabit = req.body
   console.log("cheeeeeeeeeeeeck: ", checkHabit)
 
-
+  
   res.render("testing")
 })
+/////////////////////////////////////////
 
 
-router.get('/search', (req, res, next) => {
-  document.querySelector('.btn-primary').addEventListener('click', searchUsers);
-  // Implement the search function
-function searchUsers(e) {
-  e.preventDefault(); // Prevent form submission
+router.post('/search', (req, res, next) => {
+  const searchQuery = req.body.userSearch; 
+  console.log(searchQuery)
 
-  const searchQuery = document.getElementById('search').value;
-//$regex used for case insensitive search
   User.find({ username: { $regex: searchQuery, $options: 'i' } })
     .then((users) => {
-      console.log(users);
-      res.redirect('/:username')
+      console.log('user response:', users);
+      const username = users[0].username
+      res.redirect(`/${username}`);
     })
-    .catch((err) => {next (err)});
-}
-})
+    .catch((err) => {
+      next(err);
+    });
+});
 
-/////////////////////////////////////////
+
 
 
 
