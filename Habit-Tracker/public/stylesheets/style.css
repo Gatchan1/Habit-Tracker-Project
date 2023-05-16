@@ -70,4 +70,11 @@ input{
   background-color: rgb(255, 139, 139);
 }
 
+.profileimg{
+  width: 20%;
+}
 
+.profile-top-section {
+  display: flex;
+  flex-direction: row;
+}

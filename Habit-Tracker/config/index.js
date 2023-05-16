@@ -60,8 +60,7 @@ module.exports = (app) => {
         cookie: {
             sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
             secure: process.env.NODE_ENV === "production",
-            httpOnly: true,
-            maxAge: 60000
+            httpOnly: true
         },
         store: mongoStore.create({mongoUrl:process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/habit-tracker"}) // I changed this route here (Raquel)
     }));
