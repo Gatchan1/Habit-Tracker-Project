@@ -53,7 +53,7 @@ required: true
 
 bio: { type: String, default: ''}
 
-profilephoto: { type: String, default: default.png },
+profilePhoto: { type: String, default: default.png },
 
 habits: {[ type: schema.Types.ObjectID, ref: "Habit" ]}
 
