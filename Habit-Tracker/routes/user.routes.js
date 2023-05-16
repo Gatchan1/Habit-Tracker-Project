@@ -55,7 +55,7 @@ router.post('/habit/create', (req, res, next) => {
     next(err)
    })
   })  
-
+ 
 
 router.get("/profile/edit", isLoggedIn, (req, res, next) => {
     User.findOne(req.session.currentUser)
