@@ -17,7 +17,7 @@
     <h2>Habits</h2>
 {{!-- for each item in the array habbits (from data), create a display of the habit name and the done button --}}
 
-{{#each habit}}
+{{#each habits}}
 <form action="/habits/{{id}}" method="POST">
   <div class="mb-3">
    {{this.title}}

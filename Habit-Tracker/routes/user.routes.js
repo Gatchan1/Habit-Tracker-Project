@@ -12,14 +12,13 @@ const Habit = require('../models/Habit.model');
 /* GET user profile*/
 //Should be protected to be accessed only by logged in user and only for user with username
 router.get("/profile", isLoggedIn, (req, res, next) => {
-    User.findOne(req.session.currentUser)
-    .populate("habits")
-    .then((user) => {
-        let data = user;
-        console.log(data)
-        res.render("profile", data);
-    })
-    .catch((err) => next(err))
+  User.findOne({_id: req.session.currentUser._id})
+  .populate("habits")
+  .then((user) => {
+      let data = user;
+      res.render("profile", data);
+  })
+  .catch((err) => next(err))
 });
 
 router.get('/habit/create', isLoggedIn, (req, res, next) => {
@@ -40,12 +39,11 @@ router.post('/habit/create', (req, res, next) => {
   .then(habit => {
     console.log('New habit saved:', habit);
     return User.findByIdAndUpdate(req.session.currentUser._id, { $push: { habits: habit._id }})
-    // return User.findById(req.session.currentUser._id)
+    
   })
   
-  .then((user) => {
+  .then(() => {
     res.redirect('/profile');
-    // let updatedHabit = user.habits.push(habit._id)
    })
 
   .then((userInfo) => {
@@ -103,6 +101,24 @@ router.post("/testing", (req, res, next) => {
 
 
   res.render("testing")
+})
+
+
+router.get('/search', (req, res, next) => {
+  document.querySelector('.btn-primary').addEventListener('click', searchUsers);
+  // Implement the search function
+function searchUsers(e) {
+  e.preventDefault(); // Prevent form submission
+
+  const searchQuery = document.getElementById('search').value;
+//$regex used for case insensitive search
+  User.find({ username: { $regex: searchQuery, $options: 'i' } })
+    .then((users) => {
+      console.log(users);
+      res.redirect('/:username')
+    })
+    .catch((err) => {next (err)});
+}
 })
 
 /////////////////////////////////////////
