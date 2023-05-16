@@ -7,7 +7,7 @@
     </div>
     {{!-- replace image with {{profilephoto}}, once user model is updated --}}
 
-    <h1>Welcome, {{username}}</h1>
+    <h1>Welcome, {{username}}!</h1>
 </div>
 <section id="overview" class="container-fluid mt-5">
     <h2>Overview</h2>
@@ -17,12 +17,12 @@
     <h2>Habits</h2>
 {{!-- for each item in the array habbits (from data), create a display of the habit name and the done button --}}
 
-{{#each habit}}
-<form action="/habits/{{id}}" method="POST">
+{{#each habits}}
+<form action="/habits/{{_id}}" method="POST">
   <div class="mb-3">
-   {{this.title}}
+   <h3>{{this.title}}</h3>
   </div>
-  <button type="submit" class="btn btn-primary">Done!</button>
+  <button type="submit" class="btn btn-primary" onclick="style.display = 'none'">Done!</button>
 </form>
 {{/each}}
 </section>
