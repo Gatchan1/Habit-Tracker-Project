@@ -24,6 +24,34 @@
   </div>
   <button type="submit" class="btn btn-primary" onclick="style.display = 'none'">Done!</button>
 </form>
+{{!-- Table to display current week progress (bootstrap) --}}
+
+<table class="table caption-top w-50 weekly-progress">
+  <caption>Current week progress</caption>
+  <thead>
+    <tr>
+      <th scope="col-.5">M</th>
+      <th scope="col-.5">T</th>
+      <th scope="col-1">W</th>
+      <th scope="col-1">T</th>
+      <th scope="col-1">F</th>
+      <th scope="col-1">S</th>
+      <th scope="col-1">S</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><div class="circle fill-circle"></div></td>
+      <td><div class="circle"></div></td>
+      <td><div class="circle"></div></td>
+      <td><div class="circle"></div></td>
+      <td><div class="circle"></div></td>
+      <td><div class="circle"></div></td>
+      <td><div class="circle"></div></td>
+    </tr>
+  </tbody>
+</table>
+
 {{/each}}
 </section>
 
