@@ -1,0 +1,17 @@
+<h2>Edit profile</h2>
+
+<form action="/:username/profile/edit" method="post">
+
+<label for="username">Username</label>
+<input type="text" name="username" id="username" value="{{user.username}}">
+<br>
+<label for="email">e-mail</label>
+<input type="email" name="email" id="email" value="{{user.email}}">
+<br>
+<label for="bio">Bio</label>
+<textarea name="bio" id="bio" rows="10" cols="30" placeholder="You can write down anything here and other users will be able to see it.">{{user.bio}}</textarea>
+<br>
+<label for="profilePic">Profile picture</label>
+{{!-- search how to ask for pictures! --}}
+
+</form>

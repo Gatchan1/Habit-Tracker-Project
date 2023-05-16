@@ -6,11 +6,11 @@ const { Schema, model } = require("mongoose");
 
         title: { type: String, required: true },
         
-        user: { type: Schema.Types.ObjectID, ref: "User" },
+        user: { type: Schema.Types.ObjectId, ref: "User" },
         
         datesCompleted: [Date],
         
-        groupOfUsers: [{ type: Schema.Types.ObjectID, ref: "User" }],
+        groupOfUsers: [{ type: Schema.Types.ObjectId, ref: "User" }], //the 
         
         private: Boolean
         });

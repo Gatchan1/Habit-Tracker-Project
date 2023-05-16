@@ -15,6 +15,15 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
         console.log(data)
         res.render("profile", data);
     })
+    .catch((err) => next(err))
 });
+
+router.get("/profile/edit", isLoggedIn, (req, res, next) => {
+    User.findOne(req.session.currentUser)
+    .then(user => {
+        res.render("edit-profile", user)
+    })
+    .catch((err) => next(err))
+})
 
 module.exports = router;

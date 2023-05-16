@@ -5,7 +5,7 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      required: false,
+      required: true,
       unique: true,
       trim: true,
     },
@@ -19,6 +19,13 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    bio: String,
+    profilePic: {
+      type: String,
+      default: __dirname + "/images/default.png"
+    },
+    habits: [{ type: Schema.Types.ObjectId, ref: "Habit"}],
+    friends: [{ type: Schema.Types.ObjectId, ref: "User"}]
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
