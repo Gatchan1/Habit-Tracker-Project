@@ -20,7 +20,7 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
 });
 
 router.get('/habit/create', (req, res, next) => {
-    res.render('createHabit', {layout: 'layout2'})
+    res.render('createHabit', {layout: 'layouts/layout2'})
 })
 
 router.post('/habit/create', (req, res, next) => {
@@ -45,7 +45,7 @@ router.post('/habit/create', (req, res, next) => {
     })  
 
 
-router.get("/profile/edit", isLoggedIn, (req, res, next) => {
+router.get(":username/profile/edit", isLoggedIn, (req, res, next) => {
     User.findOne(req.session.currentUser)
     .then(user => {
         res.render("edit-profile", user)
