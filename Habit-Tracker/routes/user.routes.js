@@ -4,7 +4,6 @@ const User = require("../models/User.model");
 // Handles Luxon (time dates management)
 const { DateTime } = require("luxon")
 
-
 const isLoggedIn = require("../middleware/isLoggedIn");
 const isLoggedOut = require("../middleware/isLoggedOut");
 const Habit = require('../models/Habit.model');
@@ -12,13 +11,13 @@ const Habit = require('../models/Habit.model');
 /* GET user profile*/
 //Should be protected to be accessed only by logged in user and only for user with username
 router.get("/profile", isLoggedIn, (req, res, next) => {
-  User.findOne({_id: req.session.currentUser._id})
-  .populate("habits")
-  .then((user) => {
-      let data = user;
-      res.render("profile", data);
-  })
-  .catch((err) => next(err))
+    User.findOne({_id: req.session.currentUser._id})
+    .populate("habits")
+    .then((user) => {
+        let data = user;
+        res.render("profile", data);
+    })
+    .catch((err) => next(err))
 });
 
 router.get('/habit/create', isLoggedIn, (req, res, next) => {
@@ -83,7 +82,15 @@ router.post("/habit/:habitId", (req, res, next) => {
 })
 
 
-
+//Route to other users' public profiles
+router.get('/:username', (req, res, next) => {
+   let  {username} = req.params;
+    User.findOne({username: 'username'})
+    .then((user) => {
+        res.render("public-profile", user)
+    })
+    .catch((err) => next(err));
+})
 
 
 
