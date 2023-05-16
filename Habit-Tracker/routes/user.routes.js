@@ -18,9 +18,8 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
     .catch((err) => next(err))
 });
 
-router.get("/:username/profile/edit", isLoggedIn, (req, res, next) => {
-    let username = req.params.username
-    User.findOne({username})
+router.get("/profile/edit", isLoggedIn, (req, res, next) => {
+    User.findOne(req.session.currentUser)
     .then(user => {
         res.render("edit-profile", user)
     })

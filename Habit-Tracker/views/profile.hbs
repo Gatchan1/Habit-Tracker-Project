@@ -1,3 +1,20 @@
-<h1>Welcome, {{username}}</h1>
+<div class="profile-top-section container-fluid">
+    <div class="col-sm-6 profileimg">
+    <img src="images/default.png" class="img-thumbnail" alt="profile photo">
+     <figcaption class="figure-caption">
+        <a href="/{{username}}/profile/edit">Edit profile</a></figcaption>
+        <a href="#">No Friends</a>
+    </div>
+    {{!-- replace image with {{profilephoto}}, once user model is updated --}}
 
-<a href="/{{username}}/profile/edit">Edit profile</a>
+    <h1>Welcome, {{username}}</h1>
+</div>
+<section id="overview" class="container-fluid">
+    
+</section>
+<section id="habits" class="container-fluid">
+
+</section>
+<section id="groups" class="container-fluid">
+
+</section>
