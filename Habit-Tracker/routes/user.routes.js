@@ -6,6 +6,7 @@ const { DateTime } = require("luxon");
 
 const isLoggedIn = require("../middleware/isLoggedIn");
 const isLoggedOut = require("../middleware/isLoggedOut");
+const logHabbit = require("../utils/logHabit");
 const Habit = require("../models/Habit.model");
 
 /* GET user profile*/
@@ -14,8 +15,9 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
   User.findOne({ _id: req.session.currentUser._id })
     .populate("habits")
     .then((user) => {
-      let j
-      let checkedHabits = []
+        // logHabbit(user);
+    //   let j
+    //   let checkedHabits = []
       for (let i = 0; i < user.habits.length; i++) {
         j = user.habits[i].datesCompleted.length
         let lastDate = user.habits[i].datesCompleted[j-1]
