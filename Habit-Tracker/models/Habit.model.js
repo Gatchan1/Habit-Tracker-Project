@@ -6,7 +6,9 @@ const { Schema, model } = require("mongoose");
 
         title: { type: String, required: true },
         
-        user: { type: Schema.Types.ObjectID, ref: "User" },
+        userId: { type: Schema.Types.ObjectID, ref: "User" },
+        
+        description: String,
         
         datesCompleted: [Date],
         
