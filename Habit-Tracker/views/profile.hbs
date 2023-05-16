@@ -22,7 +22,11 @@
   <div class="mb-3">
    <h3>{{this.title}}</h3>
   </div>
+{{#if checked}}
+<button type="submit" disabled="true" class="btn btn-disabled" onclick="style.display = 'none'">Done!</button>
+{{else}}
   <button type="submit" class="btn btn-primary" onclick="style.display = 'none'">Done!</button>
+  {{/if}}
 </form>
 {{/each}}
 </section>
