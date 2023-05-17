@@ -13,6 +13,10 @@ const retrieveChartData = require("../utils/retrieveChartData")
 /* GET user profile*/
 //Should be protected to be accessed only by logged in user and only for user with username
 router.get("/profile", isLoggedIn, (req, res, next) => {
+  let goodArray = 
+
+
+
   User.findOne({ _id: req.session.currentUser._id })
     .populate("habits")
     .then((user) => {
@@ -25,7 +29,10 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
         }
       }
       const data = retrieveChartData(req.session.currentUser._id)
-      //console.log("testinggggg: ", data)
+      console.log("testinggggg: ", data)
+
+
+
       res.render("profile", user);
     })
     .catch((err) => next(err));
