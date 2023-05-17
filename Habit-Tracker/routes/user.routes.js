@@ -8,16 +8,19 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 const isLoggedOut = require("../middleware/isLoggedOut");
 const logHabbit = require("../utils/logHabit");
 const Habit = require("../models/Habit.model");
+const retrieveChartData = require("../utils/retrieveChartData")
 
 /* GET user profile*/
 //Should be protected to be accessed only by logged in user and only for user with username
 router.get("/profile", isLoggedIn, (req, res, next) => {
+  let goodArray = 
+
+
+
   User.findOne({ _id: req.session.currentUser._id })
     .populate("habits")
     .then((user) => {
         // logHabbit(user);
-    //   let j
-    //   let checkedHabits = []
       for (let i = 0; i < user.habits.length; i++) {
         j = user.habits[i].datesCompleted.length
         let lastDate = user.habits[i].datesCompleted[j-1]
@@ -25,6 +28,11 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
           user.habits[i].checked = "yes";
         }
       }
+      const data = retrieveChartData(req.session.currentUser._id)
+      console.log("testinggggg: ", data)
+
+
+
       res.render("profile", user);
     })
     .catch((err) => next(err));
