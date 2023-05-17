@@ -4,11 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html"
-  },
-  "devDependencies": {
-    "parcel": "^2.6.2"
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "@cubejs-client/core": "^0.31.0",

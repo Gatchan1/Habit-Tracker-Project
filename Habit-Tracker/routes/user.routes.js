@@ -83,8 +83,7 @@ let chartData = []
             habitData.chartDates = habitData.dates.length
         })
 
-         // and also I have to compare the ordinals to "todays ordinal - 6", so that we only manage 7 days.
-         //and also put an if so that the first 6 days OF THE YEAR behave slightly differentlyyy
+         //WE could also put an if so that the first 6 days OF THE YEAR behave different
          console.log("should workkk:", chartData)
          user.chartData = chartData
          user.arrayTest = ["habit1", "habit2", "habit3", "habit4", "habit5"]
