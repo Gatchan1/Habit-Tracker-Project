@@ -9,6 +9,7 @@ const isLoggedOut = require("../middleware/isLoggedOut");
 const logHabbit = require("../utils/logHabit");
 const Habit = require("../models/Habit.model");
 const retrieveChartData = require("../utils/retrieveChartData")
+const tableArray = require('../utils/createPreview')
 
 /* GET user profile*/
 //Should be protected to be accessed only by logged in user and only for user with username
@@ -33,6 +34,13 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
 
 
 
+
+      //instead of user, adding an object containing the user's data with an array of 7 booleans containing lagged habit
+      
+      user.habits = user.habits.map(habit => {
+        habit.tableArray = tableArray(habit) //tableArray: tableArray(habit)
+        return habit;
+      })
       res.render("profile", user);
     })
     .catch((err) => next(err));
@@ -160,9 +168,6 @@ router.post('/search', (req, res, next) => {
       next(err);
     });
 });
-
-
-
 
 
 

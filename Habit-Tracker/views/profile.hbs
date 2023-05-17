@@ -49,13 +49,13 @@
   </thead>
   <tbody>
     <tr>
+      {{#each this.tableArray}}
+      {{#if this}}
       <td><div class="circle fill-circle"></div></td>
+      {{else}}
       <td><div class="circle"></div></td>
-      <td><div class="circle"></div></td>
-      <td><div class="circle"></div></td>
-      <td><div class="circle"></div></td>
-      <td><div class="circle"></div></td>
-      <td><div class="circle"></div></td>
+      {{/if}}
+      {{/each}}
     </tr>
   </tbody>
 </table>
