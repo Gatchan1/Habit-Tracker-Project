@@ -5,19 +5,23 @@
 <label>Habit title
 <input type="text" name="title" placeholder="">
 </label>
-<p></p>
+<br>
 <label>Description of your habit
 <input type="text" name="description" placeholder="" class="descriptionHabit">
 </label>
-<p></p>
+{{!-- <br>
 <label>Do you want your habit to be private?
 <p>Yes<input type="checkbox" name="private" placeholder=""></p>
-</label>
-<p></p>
+</label> --}}
+<br>
 <label>Do you want to add users to your habit?
-<input type="search" name="addUsers" placeholder="Add users">
+<select id="mySelect" multiple>
+   {{#each users}}
+  <option value="{{this.username}}">{{this.username}}</option>
+   {{/each}}
+</select>
 </label>
-<p></p>
+<br>
 <button type="submit" class="createHabit">Create</button>
 </form>
 </div>
