@@ -16,7 +16,23 @@ const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
 const multer = require("multer")
-const upload = multer({dest: "./public/uploads"}) //this specifies where do we want the images to be stored. We created the folder "uploads" inside of the public folder, and this "uploads" folder is the one we are referring to.
+const cloudinary = require("cloudinary").v2
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET 
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'cloudinary-test', //a specific folder in cloudinary
+    allowed_formats: ["jpg", "png", "jpeg", "webp"] //do we want to allow gifs too?
+  },
+});
+
+const upload = multer({ storage })
 
 //upload is an object with several methods, for example:
 //upload.any()
@@ -29,7 +45,7 @@ router.get("/signup", isLoggedOut, (req, res) => {
 });
 
 // POST /auth/signup
-router.post("/signup", isLoggedOut, upload.single("image"), (req, res) => { //here we are using a multer middleware
+router.post("/signup", isLoggedOut, upload.single("profilePic"), (req, res) => { //here we are using a multer middleware,ojo que lo de "profilePic" tiene que coincidir con el parámetro name del input del form
   const { username, email, password, passwordRepeat } = req.body;
   console.log("-----file: ", req.file)
   //req.file //we need multer for this!!!
@@ -101,7 +117,8 @@ router.post("/signup", isLoggedOut, upload.single("image"), (req, res) => { //he
     .then((salt) => bcrypt.hash(password, salt))
     .then((hashedPassword) => {
       // Create a user and save it in the database
-      return User.create({ username, email, password: hashedPassword }); //add here ---> profilePic: "/uploads/ " + req.file.filename
+      // return User.create({ username, email, password: hashedPassword, profilePic: "/uploads/" + req.file.filename }); 
+      return User.create({ username, email, password: hashedPassword, profilePic: req.file.path }); 
     })
     .then((user) => {
       res.render("auth/login", { layout: "layout2" });
