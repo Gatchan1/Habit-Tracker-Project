@@ -69,6 +69,7 @@ router.get("/profile/edit", isLoggedIn, (req, res, next) => {
     User.findOne(req.session.currentUser)
     .then(user => {
         res.render("edit-profile", user)
+        
     })
 
     .then((user) => {
