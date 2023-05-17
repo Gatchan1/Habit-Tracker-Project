@@ -22,10 +22,10 @@ const userSchema = new Schema(
     bio: String,
     profilePic: {
       type: String,
-      default: __dirname + "/images/default.png"
+      default: "/images/default.png"
     },
     habits: [{ type: Schema.Types.ObjectId, ref: "Habit"}],
-    friends: [{ type: Schema.Types.ObjectId, ref: "User"}]
+    friends: [{ type: Schema.Types.ObjectId, ref: "User"}],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

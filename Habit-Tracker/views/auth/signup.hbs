@@ -1,6 +1,6 @@
 <div id="form">
   <h2>Sign Up</h2>
-  <form action="/signup" method="POST">
+  <form action="/signup" method="POST" enctype="multipart/form-data">
 
     <label> Username
       <input type="text" name="username" placeholder="Your username" value="{{username}}"/>
@@ -18,6 +18,7 @@
       <input type="password" name="passwordRepeat" placeholder="Repeat your password" value="{{passwordRepeat}}"/>
     </label>
 <p></p>
+   
     <button type="submit">Sign Up</button>
 
 

@@ -1,21 +1,21 @@
-{{!-- <div class="profile-top-section container-fluid"> --}}
-    {{!-- <div class="col-sm-6 profileimg"> --}}
-    <img src="images/default.png" class="img-thumbnail" alt="profile photo">
+
+    <div class="profileTop">
+    <img src="{{profilePic}}" class="img-thumbnail" alt="profile photo">
      <figcaption class="figure-caption">
         <a href="/profile/edit">Edit profile</a></figcaption>
-        {{!-- <a href="#">No Friends</a> --}}
     </div>
-    {{!-- replace image with {{profilephoto}}, once user model is updated --}}
 
     <h1>Welcome, {{username}}!</h1>
 </div>
+<section>
+  <p>{{bio}}</p>
+</section>
 <section id="overview" class="container-fluid mt-5">
     <h2>Overview</h2>
     
 </section>
 <section id="habits" class="container-fluid mt-5">
     <h2>Habits</h2>
-{{!-- for each item in the array habbits (from data), create a display of the habit name and the done button --}}
 
 {{#each habits}}
 <div class="habit-section">

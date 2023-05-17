@@ -10,6 +10,28 @@ const logHabbit = require("../utils/logHabit");
 const Habit = require("../models/Habit.model");
 const tableArray = require('../utils/createPreview')
 
+
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2
+const {CloudinaryStorage} = require('multer-storage-cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'habit-pics',
+    allowed_formats: ['jpg', 'png', 'jpeg', 'webp']
+  },
+});
+
+// const upload = multer ({dest: './public/uploads'})
+const upload = multer ({storage})
+
 /* GET user profile*/
 //Should be protected to be accessed only by logged in user and only for user with username
 router.get("/profile", isLoggedIn, (req, res, next) => {
@@ -37,26 +59,40 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
 });
 
 router.get("/habit/create", isLoggedIn, (req, res, next) => {
-  res.render("createHabit", { layout: "layout" });
+  User.find()
+.then(users => {
+  
+  res.render("createHabit", { layout: "layout" , users});
+  
+})
+.catch(err => next(err))
 });
 
-router.post("/habit/create", (req, res, next) => {
-  const { title, description, private, addUsers } = req.body;
+router.post("/habit/create", isLoggedIn, (req, res, next) => {
+  const { title, description } = req.body;
+
   const newHabit = {
     title,
     userId: req.session.currentUser._id,
     description,
     datesCompleted: [],
     groupOfUsers: [], // Array of User IDs
-    private,
   };
-  Habit.create(newHabit)
+
+User.find()
+.then(users => {
+  const data = {};
+  data.users = users
+  return Habit.create(newHabit)
+})
+
   .then(habit => {
     console.log('New habit saved:', habit);
     return User.findByIdAndUpdate(req.session.currentUser._id, { $push: { habits: habit._id }})
-    
   })
-  
+  .then(resp => {
+    return User.find()
+  })
   .then(() => {
     res.redirect('/profile');
    })
@@ -72,31 +108,31 @@ router.post("/habit/create", (req, res, next) => {
 
 
 router.get("/profile/edit", isLoggedIn, (req, res, next) => {
-    User.findOne(req.session.currentUser)
+    User.findOne({_id: req.session.currentUser})
     .then(user => {
-        res.render("edit-profile", user)
+        console.log(user);
+        res.render("edit-profile", {user})
         
     })
-
-    .then((user) => {
-      res.redirect("/profile");
-      // let updatedHabit = user.habits.push(habit._id)
-    })
-
-    .then((userInfo) => {
-      console.log(userInfo);
-    })
-
+  
     .catch((err) => {
       next(err);
     });
-});
-
-router.get("/profile/edit", isLoggedIn, (req, res, next) => {
-  User.findOne(req.session.currentUser)
-    .then((user) => {
-      res.render("edit-profile", user);
+  });
+  
+  router.post("/profile/edit", isLoggedIn, upload.single('image'), (req, res, next) => {
+    const editProfile = {
+     username: req.body.username,
+     email: req.body.email,
+     bio: req.body.bio,
+     profilePic: req.file.path
+  };
+    console.log("###################", req.file)
+    User.findOneAndUpdate({_id: req.session.currentUser}, editProfile, {new: true})
+    .then(() => {
+      res.redirect("/profile");
     })
+    
     .catch((err) => next(err));
 });
 
@@ -152,7 +188,7 @@ router.post('/search', (req, res, next) => {
     .then((users) => {
       console.log('user response:', users);
       const username = users[0].username
-      res.redirect(`/${username}`);
+      res.redirect(`${username}`);
     })
     .catch((err) => {
       next(err);
