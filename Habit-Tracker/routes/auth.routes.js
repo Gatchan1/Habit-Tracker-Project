@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const transporter = require("../config/transporter.config");
+
 // ℹ️ Handles password encryption
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
@@ -41,15 +43,16 @@ router.get("/signup", isLoggedOut, (req, res) => {
 });
 
 // POST /auth/signup
-router.post("/signup", isLoggedOut, (req, res) => {
+router.post("/signup", isLoggedOut, (req, res, next) => {
   const { username, email, password, passwordRepeat } = req.body;
-  console.log('file:', req.file);
+  // console.log('file:', req.file);
   const signUpData = {
     username,
     email,
     password,
     passwordRepeat,
   };
+  console.log("hohfos: ", req.body)
 
   // Check that username, email, and password are provided
   if (
@@ -96,7 +99,8 @@ router.post("/signup", isLoggedOut, (req, res) => {
     return;
   } */
 
-  User.findOne({ username }).then((user) => {
+  User.findOne({ username })
+  .then((user) => {
     if (user) {
       signUpData.layout = "/layout2";
       signUpData.errorMessage = "Username already exists";
@@ -118,7 +122,18 @@ router.post("/signup", isLoggedOut, (req, res) => {
       }
       return User.create(newUser);
     })
-    .then((user) => {
+    .then((user)=> {
+      transporter.sendMail({
+        from: '"Cheqq Habit Tracker " <cheqq_habit@hotmail.com>',
+        to: user.email, 
+        subject: 'Welcome to Cheqq', 
+        html: `<h1>We are so glad you decided to join us, ${user.username}!</h1>
+        <p>We hope you find Cheqq useful. Feel free to contact us with suggestions for improvement; we want our app to be the best possible habit tracker :)
+        Have a good day!</p>`
+      })
+    })
+    .then(info => console.log(info))    
+    .then(() => {
       res.render("auth/login", { layout: "/layout2" });
     })
     .catch((error) => {
@@ -132,7 +147,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
           layout: "layout2",
         });
       } else {
-        next(err);
+        next(error);
       }
     });
 });
@@ -222,5 +237,100 @@ router.get("/logout", isLoggedIn, (req, res) => {
     res.redirect("/");
   });
 });
+
+
+// Managing password retrieval
+
+router.get("/forgot-password", isLoggedOut, (req, res, next) => {
+  res.render("auth/forgot-password", { layout: "/layout2" })
+})
+
+router.post("/forgot-password", isLoggedOut, (req, res, next) => {
+  const {username} = req.body
+  User.findOne({ username })
+  .then((user)=> {
+    transporter.sendMail({
+      from: '"Cheqq Habit Tracker " <cheqq_habit@hotmail.com>',
+      to: user.email, 
+      subject: 'Cheqq - Retrieve password', 
+      html: `<h1>Hi there ${user.username},</h1>
+      <p>click this link in order to create a new password, and after that you will be able to log in again. Keep up your habit tracking!</p>
+      <p>Cheers,</p><p>Cheqq Team</p>
+      
+      <a href="http://localhost:3000/${user._id}/new-password">Set new password</a>`
+    }) //obviously that route won't be the definitive one once we deploy haha
+  })
+  .then(info => console.log(info))    
+  .then(() => {
+    res.redirect("/login")
+  })
+  .catch((error) => next(error))
+
+})
+
+router.get("/:userId/new-password", (req, res, next) => {
+  const {userId} = req.params;
+  res.render("auth/new-password", {userId, layout: "/layout2" })
+})
+
+router.post("/:userId/new-password", (req, res, next) => {
+  const {userId} = req.params;
+  const {password, passwordRepeat} = req.body
+  const newPassw = {password, passwordRepeat}
+
+  //Check for blank fields
+  if (
+    password === "" ||
+    passwordRepeat === ""
+  ) {
+    newPassw.errorMessage =
+      "Please fill out every blank field and try again.";
+    newPassw.layout = "/layout2";
+
+    res.render("auth/new-password", newPassw);
+    return;
+  }
+
+  //Check if both provided passwords are equal
+  if (password != passwordRepeat) {
+    newPassw.errorMessage =
+      "Both the password and the repeat password must be the same.";
+    newPassw.layout = "/layout2";
+
+    res.render("auth/new-password", newPassw);
+
+    return;
+  }
+
+  if (password.length < 6) {
+    newPassw.errorMessage =
+      "Your password needs to be at least 6 characters long.";
+    newPassw.layout = "/layout2";
+
+    res.render("auth/new-password", newPassw);
+
+    return;
+  }
+
+  bcrypt
+    .genSalt(saltRounds)
+    .then((salt) => bcrypt.hash(password, salt))
+    .then((hashedPassword) => {
+      return User.findByIdAndUpdate(userId, {password: hashedPassword}, {new: true});
+    })
+    .then(info => {
+      console.log("password updated!")
+      res.render("auth/login", { layout: "/layout2" });
+    })
+    .catch((error) => next(error))
+
+
+  // User.findByIdAndUpdate(userId, )
+  // .then((user) => {
+
+  // })
+  // .catch(err => next(err))
+
+})
 
 module.exports = router;
