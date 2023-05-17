@@ -15,14 +15,25 @@ const User = require("../models/User.model");
 const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
+const multer = require("multer")
+const upload = multer({dest: "./public/uploads"}) //this specifies where do we want the images to be stored. We created the folder "uploads" inside of the public folder, and this "uploads" folder is the one we are referring to.
+
+//upload is an object with several methods, for example:
+//upload.any()
+//upload.single("image") <-- this is a middleware!!
+
+
 // GET /auth/signup
-router.get("/signup", isLoggedOut, (req, res) => {
+router.get("/signup", isLoggedOut, (req, res) => { 
   res.render("auth/signup", { layout: "layout2" });
 });
 
 // POST /auth/signup
-router.post("/signup", isLoggedOut, (req, res) => {
+router.post("/signup", isLoggedOut, upload.single("image"), (req, res) => { //here we are using a multer middleware
   const { username, email, password, passwordRepeat } = req.body;
+  console.log("-----file: ", req.file)
+  //req.file //we need multer for this!!!
+
   const signUpData = {
     username,
     email,
@@ -90,7 +101,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
     .then((salt) => bcrypt.hash(password, salt))
     .then((hashedPassword) => {
       // Create a user and save it in the database
-      return User.create({ username, email, password: hashedPassword });
+      return User.create({ username, email, password: hashedPassword }); //add here ---> profilePic: "/uploads/ " + req.file.filename
     })
     .then((user) => {
       res.render("auth/login", { layout: "layout2" });
@@ -140,7 +151,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     });
   }
 
-  // Search the database for a user with the email submitted in the form
+  // Search the database for a user with the NAME submitted in the form
   User.findOne({ username })
     .then((user) => {
       // If the user isn't found, send an error message that user provided wrong credentials

@@ -22,7 +22,7 @@ const userSchema = new Schema(
     bio: String,
     profilePic: {
       type: String,
-      default: __dirname + "/images/default.png"
+      default: "/images/default.png"
     },
     habits: [{ type: Schema.Types.ObjectId, ref: "Habit"}],
     friends: [{ type: Schema.Types.ObjectId, ref: "User"}]
