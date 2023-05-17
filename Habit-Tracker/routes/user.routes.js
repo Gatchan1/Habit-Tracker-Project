@@ -125,7 +125,7 @@ router.get("/profile/edit", isLoggedIn, (req, res, next) => {
      username: req.body.username,
      email: req.body.email,
      bio: req.body.bio,
-    profilePic: req.file.path
+     profilePic: req.file.path
   };
     console.log("###################", req.file)
     User.findOneAndUpdate({_id: req.session.currentUser}, editProfile, {new: true})
