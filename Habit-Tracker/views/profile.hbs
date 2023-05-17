@@ -3,7 +3,7 @@
     <img src="images/default.png" class="img-thumbnail" alt="profile photo">
      <figcaption class="figure-caption">
         <a href="/profile/edit">Edit profile</a></figcaption>
-        <a href="#">No Friends</a>
+        {{!-- <a href="#">No Friends</a> --}}
     </div>
     {{!-- replace image with {{profilephoto}}, once user model is updated --}}
 
@@ -32,6 +32,34 @@
   <button type="submit" class="btn btn-primary" onclick="style.display = 'none'">Done!</button>
   {{/if}}
 </form>
+{{!-- Table to display current week progress (bootstrap) --}}
+
+<table class="table caption-top w-50 weekly-progress">
+  <caption>Current week progress</caption>
+  <thead>
+    <tr>
+      <th scope="col-.5">M</th>
+      <th scope="col-.5">T</th>
+      <th scope="col-1">W</th>
+      <th scope="col-1">T</th>
+      <th scope="col-1">F</th>
+      <th scope="col-1">S</th>
+      <th scope="col-1">S</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><div class="circle fill-circle"></div></td>
+      <td><div class="circle"></div></td>
+      <td><div class="circle"></div></td>
+      <td><div class="circle"></div></td>
+      <td><div class="circle"></div></td>
+      <td><div class="circle"></div></td>
+      <td><div class="circle"></div></td>
+    </tr>
+  </tbody>
+</table>
+
 {{/each}}
 </section>
 

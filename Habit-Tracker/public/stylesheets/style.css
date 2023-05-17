@@ -86,6 +86,17 @@ img.img-thumbnail{
   flex-direction: row;
 }
 
+.circle {
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  border: black solid;
+}
+
+.fill-circle {
+  background-color:black;
+}
+
 .btn-disabled {
   background-color: rgb(192, 255, 234);
 }
