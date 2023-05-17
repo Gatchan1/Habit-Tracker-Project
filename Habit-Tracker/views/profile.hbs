@@ -11,9 +11,12 @@
 </div>
 <section id="overview" class="container-fluid mt-5">
     <h2>Overview</h2>
-    
 <div>
-  <canvas id="myChart"></canvas>
+
+  <div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
+
+    
+  {{!-- <canvas id="myChart"></canvas> --}}
 </div>
 
 </section>
@@ -70,37 +73,7 @@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  const ctx = document.getElementById('myChart');
+<!-- <script type="module" src="dimensions.js"></script> -->
+    <script type="module" src="acquisitions.js"></script>
 
 
-
-  new Chart(ctx, {
-    type: 'polarArea',
-    data: {
-      labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Violet'],
-      datasets: [{
-        label: '# of Votes',
-        data: [7, 4, 3, 5, 2, 3, 4],
-        borderWidth: 1,
-        backgroundColor: [
-      'rgba(255, 99, 122, 0.5)',
-      'rgb(255, 160, 30, 0.5)',
-      'rgb(255, 235, 106, 0.7)',
-      'rgb(74, 207, 145, 0.5)',
-      'rgb(54, 162, 235, 0.5)',
-      'rgb(22, 32, 168, 0.5)',
-      'rgb(104, 48, 156, 0.5)'
-      ]
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-</script>

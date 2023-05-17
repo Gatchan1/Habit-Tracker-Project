@@ -14,9 +14,7 @@ const tableArray = require('../utils/createPreview')
 /* GET user profile*/
 //Should be protected to be accessed only by logged in user and only for user with username
 router.get("/profile", isLoggedIn, (req, res, next) => {
-  let goodArray = 
-
-
+  
 
   User.findOne({ _id: req.session.currentUser._id })
     .populate("habits")
@@ -29,19 +27,87 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
           user.habits[i].checked = "yes";
         }
       }
-      const data = retrieveChartData(req.session.currentUser._id)
-      console.log("testinggggg: ", data)
-
-
-
-
       //instead of user, adding an object containing the user's data with an array of 7 booleans containing lagged habit
       
       user.habits = user.habits.map(habit => {
         habit.tableArray = tableArray(habit) //tableArray: tableArray(habit)
         return habit;
       })
-      res.render("profile", user);
+
+      //we need to create a copy of habits, one for Lisa's implementation to transform, and the other would be for retrieving my chart data. Both of them should go into the user object, and pass this user object to the render.
+
+
+///////////////////////////////////////
+//////// RETRIEVING CHART DATA ////////
+//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv      
+
+let chartData = []
+    User.findOne({ _id: req.session.currentUser._id })
+    .populate("habits")
+    .then((user) => {
+        console.log("nowwww: ",DateTime.now().ordinal)
+
+        if (user.habits.length < 7) {
+            for (let i = 0; i < user.habits.length; i++) {
+                // console.log("datesCompleted: ", user.habits[i].datesCompleted)                
+                
+                for (let j = 0; j < user.habits[i].datesCompleted.length; j++) {
+                    date = user.habits[i].datesCompleted[j]
+                    // console.log(`datessss: `,DateTime.fromISO(date).ordinal)
+
+                    if ((DateTime.now().ordinal - DateTime.fromISO(date).ordinal) < 7 ) {
+                        chartData[i].dates.push(DateTime.fromISO(date).ordinal)
+                    }     
+
+                }                            
+            }
+
+        } else {
+            for (let i = 0; i < 7; i++) {  //different end condition of Outer For-Loop
+                // console.log("datesCompleted: ", user.habits[i].datesCompleted)    
+                // console.log("habiiiit: ",user.habits[i].title)
+                chartData.push({title: user.habits[i].title, dates: []})            
+                
+                for (let j = 0; j < user.habits[i].datesCompleted.length; j++) {
+                    date = user.habits[i].datesCompleted[j]
+                    // console.log(`datessss: `,DateTime.fromISO(date).ordinal)
+
+                    if ((DateTime.now().ordinal - DateTime.fromISO(date).ordinal) < 7 ) {
+                        chartData[i].dates.push(DateTime.fromISO(date).ordinal)
+                    }
+                }                            
+            }
+        }
+
+        chartData.forEach((habitData) => {
+            habitData.chartDates = habitData.dates.length
+        })
+
+         // and also I have to compare the ordinals to "todays ordinal - 6", so that we only manage 7 days.
+         //and also put an if so that the first 6 days OF THE YEAR behave slightly differentlyyy
+         console.log("should workkk:", chartData)
+         user.chartData = chartData
+         user.arrayTest = ["habit1", "habit2", "habit3", "habit4", "habit5"]
+         user.numberTest = [2,3,4,2,0]
+
+        //  module.exports = user
+
+
+
+         ////////////////////////////
+         res.render("profile", user); ////////
+         //////////////////////////////
+
+    })
+    .catch(err => console.log(err))
+
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    
+//////// RETRIEVING CHART DATA ////////
+///////////////////////////////////////
+
+//swap the other res.render with this one vvvv for Lisa's part to work.
+
+      // res.render("profile", user);
     })
     .catch((err) => next(err));
 });
