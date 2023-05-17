@@ -25,7 +25,7 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
         }
       }
       const data = retrieveChartData(req.session.currentUser._id)
-      console.log("testinggggg: ", data)
+      //console.log("testinggggg: ", data)
       res.render("profile", user);
     })
     .catch((err) => next(err));
