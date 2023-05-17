@@ -100,3 +100,13 @@ img.img-thumbnail{
 .btn-disabled {
   background-color: rgb(192, 255, 234);
 }
+
+.habit-section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.weekly-progress {
+
+}

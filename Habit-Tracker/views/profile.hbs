@@ -18,6 +18,7 @@
 {{!-- for each item in the array habbits (from data), create a display of the habit name and the done button --}}
 
 {{#each habits}}
+<div class="habit-section">
 <form action="/habits/{{_id}}" method="POST">
   <div class="mb-3">
    <h3>{{this.title}}</h3>
@@ -28,10 +29,11 @@
   <button type="submit" class="btn btn-primary" onclick="style.display = 'none'">Done!</button>
   {{/if}}
 </form>
+
 {{!-- Table to display current week progress (bootstrap) --}}
 
 <table class="table caption-top w-50 weekly-progress">
-  <caption>Current week progress</caption>
+  {{!-- <caption>Current week progress</caption> --}}
   <thead>
     <tr>
       <th scope="col-.5">M</th>
@@ -57,6 +59,7 @@
 </table>
 
 {{/each}}
+</div>
 </section>
 
 <section id="groups" class="container-fluid mt-5">
