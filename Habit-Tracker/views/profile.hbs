@@ -1,6 +1,6 @@
 {{!-- <div class="profile-top-section container-fluid"> --}}
     {{!-- <div class="col-sm-6 profileimg"> --}}
-    <img src="images/default.png" class="img-thumbnail" alt="profile photo">
+    <img src="{{profilephotosrc}}" class="img-thumbnail" alt="profile photo">
      <figcaption class="figure-caption">
         <a href="/profile/edit">Edit profile</a></figcaption>
         {{!-- <a href="#">No Friends</a> --}}
@@ -30,7 +30,7 @@
 </form>
 {{!-- Table to display current week progress (bootstrap) --}}
 
-<table class="table caption-top w-50 weekly-progress">
+<table class="table caption-top w-50 weekly-progress" id="{{this.id}}">
   <caption>Current week progress</caption>
   <thead>
     <tr>

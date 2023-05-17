@@ -15,20 +15,43 @@ const User = require("../models/User.model");
 const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'cloudinary-test',
+    format: async (req, file) => 'png',
+    public_id: (req, file) => 'computed-filename-using-request'
+  }
+})
+
+const upload = multer({ storage }) //Specifies, where the img will be stored
+
 // GET /auth/signup
 router.get("/signup", isLoggedOut, (req, res) => {
   res.render("auth/signup", { layout: "layout2" });
 });
 
 // POST /auth/signup
-router.post("/signup", isLoggedOut, (req, res) => {
-  const { username, email, password, passwordRepeat } = req.body;
+router.post("/signup", isLoggedOut, upload.single('profilephoto'), (req, res) => {
+  const { username, email, password, passwordRepeat, profilephotosrc = req.file.path } = req.body;
   const signUpData = {
     username,
     email,
     password,
     passwordRepeat,
+    profilephotosrc
   };
+  //req.file - need to npm i multer
+
 
   // Check that username, email, and password are provided
   if (
@@ -90,7 +113,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
     .then((salt) => bcrypt.hash(password, salt))
     .then((hashedPassword) => {
       // Create a user and save it in the database
-      return User.create({ username, email, password: hashedPassword });
+      return User.create({ username, email, password: hashedPassword, profilephotosrc });
     })
     .then((user) => {
       res.render("auth/login", { layout: "layout2" });

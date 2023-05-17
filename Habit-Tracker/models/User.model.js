@@ -25,12 +25,13 @@ const userSchema = new Schema(
       default: __dirname + "/images/default.png"
     },
     habits: [{ type: Schema.Types.ObjectId, ref: "Habit"}],
-    friends: [{ type: Schema.Types.ObjectId, ref: "User"}]
+    friends: [{ type: Schema.Types.ObjectId, ref: "User"}],
+    profilephotosrc: String
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
-  }
+  },
 );
 
 const User = model("User", userSchema);

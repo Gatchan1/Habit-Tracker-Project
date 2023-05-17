@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/User.model");
 // Handles Luxon (time dates management)
 const { DateTime } = require("luxon");
+const luxon = {DateTime};
 
 const isLoggedIn = require("../middleware/isLoggedIn");
 const isLoggedOut = require("../middleware/isLoggedOut");
@@ -16,8 +17,7 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
     .populate("habits")
     .then((user) => {
         // logHabbit(user);
-    //   let j
-    //   let checkedHabits = []
+        console.log(user.profilephotosrc)
       for (let i = 0; i < user.habits.length; i++) {
         j = user.habits[i].datesCompleted.length
         let lastDate = user.habits[i].datesCompleted[j-1]
