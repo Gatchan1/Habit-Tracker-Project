@@ -1,6 +1,6 @@
 <h2>Edit profile</h2>
 
-<form action="/profile/edit" method="post">
+<form action="/profile/edit" method="post" enctype="multipart/form-data">
 
 <label for="username">Username</label>
 <input type="text" name="username" id="username" value="{{user.username}}">
@@ -11,7 +11,11 @@
 <label for="bio">Bio</label>
 <textarea name="bio" id="bio" rows="10" cols="30" placeholder="You can write down anything here and other users will be able to see it.">{{user.bio}}</textarea>
 <br>
-<label for="profilePic">Profile picture</label>
+<label> Profile image
+      <input type="file" name="image" placeholder="Your image"/>
+</label>
+<button type="submit" class="editProfile">Update</button>
+
 {{!-- search how to ask for pictures! --}}
 
 </form>
