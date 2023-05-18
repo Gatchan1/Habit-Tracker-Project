@@ -61,51 +61,44 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
 router.get("/habit/create", isLoggedIn, (req, res, next) => {
   User.find()
 .then(users => {
-  
-  res.render("createHabit", { layout: "layout" , users});
-  
+  res.render("createHabit", {layout: "layout" , users});
+})
+
+.then(() => {
+  const selected = [];
+  document.getElementById("option").addEventListener("click", addUser);
+  function addUser(){
+    document.getElementsByClassName('selected') = selected.push('holi')
+  }
+  console.log('@@@:', selected)
 })
 .catch(err => next(err))
 });
 
 router.post("/habit/create", isLoggedIn, (req, res, next) => {
   const { title, description } = req.body;
-
   const newHabit = {
     title,
     userId: req.session.currentUser._id,
     description,
     datesCompleted: [],
     groupOfUsers: [], // Array of User IDs
-  };
+  }
+ 
+  Habit.create(newHabit)
+    .then(habit => {
+      console.log('New habit saved:', habit);
+      return User.findByIdAndUpdate(req.session.currentUser._id, { $push: { habits: habit._id}})
+       })
 
-User.find()
-.then(users => {
-  const data = {};
-  data.users = users
-  return Habit.create(newHabit)
-})
-
-  .then(habit => {
-    console.log('New habit saved:', habit);
-    return User.findByIdAndUpdate(req.session.currentUser._id, { $push: { habits: habit._id }})
-  })
-  .then(resp => {
-    return User.find()
-  })
   .then(() => {
     res.redirect('/profile');
    })
 
-  .then((userInfo) => {
-      console.log(userInfo)
-     }) 
-
   .catch(err => {
     next(err)
    })
-  })  
-
+}) 
 
 router.get("/profile/edit", isLoggedIn, (req, res, next) => {
     User.findOne({_id: req.session.currentUser})
@@ -176,7 +169,7 @@ router.post("/testing", (req, res, next) => {
 
   
   res.render("testing")
-})
+});
 /////////////////////////////////////////
 
 

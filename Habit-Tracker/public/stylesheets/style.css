@@ -1,14 +1,16 @@
 body {
   /* padding: 50px; */
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: linear-gradient(rgba(0, 153, 255, 0.5), rgba(255, 255, 0, 0.5))
 }
 
 a {
-  color: #00b7ff;
+  color: #ffffff;
+  font-style: none;
 }
 
 h1 {
-  color: 15px;
+  font-size: 15px;
 }
 
 h1.homeTitle{
@@ -17,13 +19,18 @@ h1.homeTitle{
   justify-content: center;
   text-align: center;
   margin-top: 150px;
+  color: white;
+  text-shadow: 2px 2px rgba(0, 0, 255, 0.5);
 }
 
 .homeDescription{
   display: flex;
   justify-content: center;
   text-align: center;
-  font-size: 15px;
+  font-size: 18px;
+  padding-bottom: 400px;
+  color: rgba(0, 0, 255, 0.5);
+  letter-spacing: 1px;
 
 }
 
@@ -101,6 +108,15 @@ img.img-thumbnail{
   background-color: rgb(192, 255, 234);
 }
 
-#mySelect{
+#floatingSelect{
   width: 300px;
+}
+
+.selector{
+  display: flex;
+}
+
+.background{
+  /* background-image: url('/public/images/background.jpg'); */
+  background-color: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5));
 }

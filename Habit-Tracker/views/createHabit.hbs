@@ -9,17 +9,16 @@
 <label>Description of your habit
 <input type="text" name="description" placeholder="" class="descriptionHabit">
 </label>
-{{!-- <br>
-<label>Do you want your habit to be private?
-<p>Yes<input type="checkbox" name="private" placeholder=""></p>
-</label> --}}
 <br>
-<label>Do you want to add users to your habit?
-<select id="mySelect" multiple>
+
+<label class="selector">Do you want to add users to your habit?  
+  <select class="form-select" id="floatingSelect" aria-label="Floating label select example" multiple>
    {{#each users}}
-  <option value="{{this.username}}">{{this.username}}</option>
+    <option id="option" class="option" value="{{this._id}}" selected>{{this.username}}</option>
    {{/each}}
-</select>
+  </select>
+</label>
+<label class="selected">Selected users
 </label>
 <br>
 <button type="submit" class="createHabit">Create</button>
