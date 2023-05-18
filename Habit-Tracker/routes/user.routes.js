@@ -126,29 +126,30 @@ router.post("/habit/create", isLoggedIn, (req, res, next) => {
 
         for (let i = 0; i < groupOfUsers.length; i++) {
 
-          let externalGroupOfUsers = req.body.groupOfUsers.map()
+          let externalUser = groupOfUsers[i]
 
-          groupOfUsers[i]
-
-
-
-
-
-        }
-        groupOfUsers.forEach(externalUser => {
-          
-
-
+          let newHabitUsers = []
+          for (let j = 0; j < groupOfUsers.length; j++) {
+            if (groupOfUsers[j] != externalUser) {
+              newHabitUsers.push(groupOfUsers[j])
+            }
+          }
+          newHabitUsers.push(req.session.currentUser._id)
 
           let newExternalHabit = {
             title,
             userId: externalUser,
             description,
             datesCompleted,
-            groupOfUsers
+            groupOfUsers: newHabitUsers
           }
 
-        })
+          console.log("newExternalHabit: ", i, newExternalHabit)
+       
+
+
+        }
+       
       }
     })
     .then(() => {

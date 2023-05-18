@@ -247,17 +247,27 @@ router.get("/forgot-password", isLoggedOut, (req, res, next) => {
 
 router.post("/forgot-password", isLoggedOut, (req, res, next) => {
   const {username} = req.body
-  User.findOne({ username })
+  User.find({ username })
+  .then((user) => {
+    let forgotPassw = {}
+    if (user.length == 0) {
+      forgotPassw.layout = "/layout2";
+      forgotPassw.errorMessage = "The user you entered doesn't exist in the database";
+      res.render("auth/forgot-password", forgotPassw);
+      return;
+    }
+    return user
+  })
   .then((user)=> {
     transporter.sendMail({
       from: '"Cheqq Habit Tracker " <cheqq_habit@hotmail.com>',
-      to: user.email, 
+      to: user[0].email, 
       subject: 'Cheqq - Retrieve password', 
-      html: `<h1>Hi there ${user.username},</h1>
+      html: `<h1>Hi there ${user[0].username},</h1>
       <p>click this link in order to create a new password, and after that you will be able to log in again. Keep up your habit tracking!</p>
       <p>Cheers,</p><p>Cheqq Team</p>
       
-      <a href="https://cheqq.fly.dev/${user._id}/new-password">Set new password</a>`
+      <a href="https://cheqq.fly.dev/${user[0]._id}/new-password">Set new password</a>`
     }) 
   })
   .then(info => console.log(info))    
