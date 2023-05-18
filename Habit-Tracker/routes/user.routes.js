@@ -38,6 +38,7 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
   User.findOne({ _id: req.session.currentUser._id })
     .populate("habits")
     .then((user) => {
+      // console.log('##################', user)
       // logHabbit(user);
       for (let i = 0; i < user.habits.length; i++) {
         j = user.habits[i].datesCompleted.length;

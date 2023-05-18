@@ -12,14 +12,18 @@
 </section>
 <section id="overview" class="container-fluid mt-5">
     <h2>Overview</h2>
+    {{#if habits.[0]}}
 <div>   
   <canvas id="myChart"></canvas>
 </div>
+    {{else}}
+      <p>No habits yet - add some habits to start tracking!</p>
+{{/if}}
 
 </section>
 <section id="habits" class="container-fluid mt-5">
     <h2>Habits</h2>
-
+{{#if habits.[0]}}
 {{#each habits}}
 <div class="habit-section">
 <form action="/habits/{{_id}}" method="POST">
@@ -65,11 +69,18 @@
 
 {{/each}}
 </div>
+{{else}}
+      <p>No habits yet - add some habits to start tracking!</p>
+{{/if}}
 </section>
 
 <section id="groups" class="container-fluid mt-5">
     <h2>Groups</h2>
+{{#if habits.groupOfUsers.[0]}}
 
+{{else}}
+      <p>You haven't joined any group yet</p>
+{{/if}}
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

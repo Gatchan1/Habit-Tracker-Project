@@ -15,7 +15,10 @@
   </div>
   {{!-- displaying join button, if user hasn't joined the habit yet --}}
   {{#if joined}}
-    <button disabled="true" class="btn btn-disabled">Joined!</button>
+    {{!-- <button disabled="true" class="btn btn-disabled">Joined!</button> --}}
+    <form>
+        <button type="submit" disabled="true"  class="btn btn-info">Joined!</button>
+    </form>
 {{else}}
     <form action="/{{userId}}/join/{{this._id}}" method="POST">
     <button type="submit" class="btn btn-info">Join habit</button>
