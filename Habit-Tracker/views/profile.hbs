@@ -66,22 +66,24 @@
 
 </section>
 
-
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   const ctx = document.getElementById('myChart');
 
+
  // const user = require("../routes/user.routes")
   //console.log(user.arrayTest)
 
-  new Chart(ctx, {
+  axios.get("http://localhost:3000/getChartData")
+  .then(({data}) => {
+    new Chart(ctx, {
     type: 'polarArea',
     data: {
-      labels: [
-      'Orange', 'Yellow', 'Green', 'Blue', 'Indigo'],
+      labels: data.labels,
       datasets: [{
         label: '# of Votes',
-        data: [7, 4, 3, 5, 2],
+        data: data.dates,
         borderWidth: 1,
         backgroundColor: [
       'rgba(255, 99, 122, 0.5)',
@@ -102,4 +104,8 @@
       }
     }
   });
+
+  })
+
+  
 </script>
