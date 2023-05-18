@@ -13,6 +13,27 @@
     {{bio}}
 </section>
 
-<section id="user-groups" class="container-fluid mt-5">
-    <h2>Groups</h2>
+<section id="user-habits" class="container-fluid mt-5">
+    <h2>Habits</h2>
+{{#each habits}}
+<div class="habit-section">
+  <div class="mb-3 habit-title">
+    <h3>{{this.title}}</h3>
+    <p>{{this.description}}</p>
+  </div>
+  {{!-- displaying join button, if user hasn't joined the habit yet --}}
+  {{#if joined}}
+    <button disabled="true" class="btn btn-disabled">Joined!</button>
+{{else}}
+    <form action="/{{userId}}/join/{{this._id}}" method="POST">
+    <button type="submit" class="btn btn-info">Join habit</button>
+</form>
+{{/if}}
+</div>
+{{/each}}
 </section>
+
+
+{{!-- <section id="user-groups" class="container-fluid mt-5">
+    <h2>Groups</h2>
+</section> --}}

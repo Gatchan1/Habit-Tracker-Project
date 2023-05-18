@@ -10,11 +10,10 @@
 <input type="text" name="description" placeholder="" class="descriptionHabit">
 </label>
 <br>
-
-<label class="selector"><h3>Do you want to add users to your habit?</h3>
-  <select class="form-select" id="floatingSelect" aria-label="Floating label select example" multiple>
+<label>Do you want to add users to your habit?
+<select name="groupOfUsers" multiple>
    {{#each users}}
-    <option id="option" class="option" value="{{this._id}}" selected>{{this.username}}</option>
+  <option value="{{this._id}}">{{this.username}}</option>
    {{/each}}
   </select>
 </label>
