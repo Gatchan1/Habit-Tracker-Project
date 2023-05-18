@@ -53,11 +53,6 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
         return habit;
       });
 
-      // const user = require("../routes/user.routes")
-      //console.log(user.arrayTest)
-      console.log("antes");
-
-
       res.render("profile", user);
     })
     .catch((err) => next(err));
@@ -84,7 +79,7 @@ router.get("/getChartData", (req, res, next) => {
       }
 
       //WE could also put an if so that the first 6 days OF THE YEAR behave different
-      console.log("chartData:", chartData);
+      // console.log("chartData:", chartData);
 
       let chartDataFormatted = {
         labels: chartData.map((habit) => habit.title),
@@ -95,6 +90,8 @@ router.get("/getChartData", (req, res, next) => {
     });
 });
 
+// CREATE HABIT
+// GET
 router.get("/habit/create", isLoggedIn, (req, res, next) => {
   User.find()
     .then((users) => {
@@ -103,48 +100,71 @@ router.get("/habit/create", isLoggedIn, (req, res, next) => {
     .catch((err) => next(err));
 });
 
+// POST
 router.post("/habit/create", isLoggedIn, (req, res, next) => {
   const { title, description } = req.body;
+  let groupOfUsers = []
+  if (req.body.groupOfUsers) {
+    groupOfUsers = req.body.groupOfUsers
+  }
 
   const newHabit = {
     title,
     userId: req.session.currentUser._id,
     description,
     datesCompleted: [],
-    groupOfUsers: [], // Array of User IDs
+    groupOfUsers, // Array of User IDs
   };
 
-  User.find()
-    .then((users) => {
-      const data = {};
-      data.users = users;
-      return Habit.create(newHabit);
-    })
-
+  Habit.create(newHabit) // create the habit for current user
     .then((habit) => {
       console.log("New habit saved:", habit);
       return User.findByIdAndUpdate(req.session.currentUser._id, { $push: { habits: habit._id } });
     })
-    .then((resp) => {
-      return User.find();
+    .then(() => { // create a copy of the habit for the people chosen in the group
+      if (req.body.groupOfUsers) {
+
+        for (let i = 0; i < groupOfUsers.length; i++) {
+
+          let externalGroupOfUsers = req.body.groupOfUsers.map()
+
+          groupOfUsers[i]
+
+
+
+
+
+        }
+        groupOfUsers.forEach(externalUser => {
+          
+
+
+
+          let newExternalHabit = {
+            title,
+            userId: externalUser,
+            description,
+            datesCompleted,
+            groupOfUsers
+          }
+
+        })
+      }
     })
     .then(() => {
       res.redirect("/profile");
     })
-
-    .then((userInfo) => {
-      console.log(userInfo);
-    })
-
     .catch((err) => {
       next(err);
     });
 });
 
+// PROFILE EDIT
+// GET
 router.get("/profile/edit", isLoggedIn, (req, res, next) => {
   User.findOne({ _id: req.session.currentUser })
     .then((user) => {
-      console.log(user);
+      // console.log(user);
       res.render("edit-profile", { user });
     })
 
@@ -153,6 +173,7 @@ router.get("/profile/edit", isLoggedIn, (req, res, next) => {
     });
 });
 
+//POST
 router.post("/profile/edit", isLoggedIn, upload.single("image"), (req, res, next) => {
   const editProfile = {
     username: req.body.username,
@@ -195,21 +216,6 @@ router.get("/:username", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-////////////   TEST ROUTES!!!! only for testing   //////////////////////////
-
-router.get("/testing", (req, res, next) => {
-  const now = DateTime.now().toISODate();
-  console.log("date: ", now);
-  res.render("testing");
-});
-
-router.post("/testing", (req, res, next) => {
-  let checkHabit = req.body;
-  console.log("cheeeeeeeeeeeeck: ", checkHabit);
-
-  res.render("testing");
-});
-/////////////////////////////////////////
 
 router.post("/search", (req, res, next) => {
   const searchQuery = req.body.userSearch;
