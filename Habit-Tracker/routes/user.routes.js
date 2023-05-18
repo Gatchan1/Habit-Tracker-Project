@@ -214,16 +214,78 @@ router.post("/habits/:habitId", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-//Route to other users' public profiles
-router.get("/:username", (req, res, next) => {
-  let { username } = req.params;
-  User.findOne({ username })
+//Route to other users' PUBLIC PROFILES
+router.get('/:username', (req, res, next) => {
+   let {username} = req.params;
+    User.findOne({username})
     .then((user) => {
       res.render("public-profile", user);
     })
     .catch((err) => next(err));
 });
 
+//HABBIT ROUTE
+router.get('/showhabit/:habitId', (req, res, next) => {
+  let {habitId} = req.params
+  Habit.findOne({_id: habitId})
+  .then((habit) => {
+    res.render('habit', habit);
+  })
+  .catch((err) => next(err));
+})
+
+//EDIT HABIT GET
+router.get("/:habitId/edit", isLoggedIn, (req, res, next) => {
+  let {habitId} = req.params
+  Habit.findOne({_id: habitId})
+.then(habit => {
+  res.render("edit-habit", habit);
+})
+.catch(err => next(err))
+});
+
+//EDIT HABIT POST
+router.post("/:habitId/edit", isLoggedIn, (req, res, next) => {
+  const { title, description } = req.body;
+  let {habitId} = req.params
+  Habit.findByIdAndUpdate( habitId, {title, description}, {new: true})
+  .then(habit => {
+   res.redirect('/profile')
+  })
+  .catch(err => next(err))
+});
+
+//DELETE HABIT
+router.post('/delete/:habitId', isLoggedIn, (req, res, next) => {
+  let {habitId} = req.params
+  Habit.findByIdAndDelete(habitId)
+  .then(habit => {
+    res.redirect('/profile')
+  })
+  .catch(err => next(err))
+})
+
+
+
+
+
+
+
+////////////   TEST ROUTES!!!! only for testing   //////////////////////////
+
+router.get("/testing", (req, res, next) => {
+  const now = DateTime.now().toISODate();
+  console.log("date: ", now);
+  res.render("testing");
+});
+
+router.post("/testing", (req, res, next) => {
+  let checkHabit = req.body;
+  console.log("cheeeeeeeeeeeeck: ", checkHabit);
+
+  res.render("testing");
+});
+/////////////////////////////////////////
 
 router.post("/search", (req, res, next) => {
   const searchQuery = req.body.userSearch;

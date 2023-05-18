@@ -1,0 +1,26 @@
+<h1>Edit habit: {{title}}</h1>
+<div class="createForm">
+  <form action="/{{_id}}/edit" method="POST">
+    <label>Title:
+      <input type="text" name="title" placeholder="" value="{{title}}"/>
+    </label>
+    <br />
+    <label>Description:
+      <input type="text" name="description" placeholder="" class="descriptionHabit" value="{{description}}"/>
+    </label>
+    <br />
+    {{!-- <label>Show on my public profile
+      <p>Yes<input type="checkbox" name="private" placeholder="" /></p>
+    </label> --}}
+    {{!-- <br /> --}}
+    {{!-- <label>Add users to your habit
+      <select id="mySelect" multiple>
+        {{#each users}}
+          <option value="{{this.username}}">{{this.username}}</option>
+        {{/each}}
+      </select>
+    </label> --}}
+    <br />
+    <button type="submit" class="createHabit">Save</button>
+  </form>
+</div>
