@@ -1,80 +1,81 @@
 
-    <div class="profileTop">
-    <img src="{{profilePic}}" class="img-thumbnail" alt="profile photo">
-     <figcaption class="figure-caption">
-        <a href="/profile/edit">Edit profile</a></figcaption>
-    </div>
-
-    <h1>Welcome, {{username}}!</h1>
+<div class="profileTop">
+  <img src="{{profilePic}}" class="img-thumbnail" alt="profile photo">
+  <figcaption class="figure-caption">
+  <a href="/profile/edit">Edit profile</a></figcaption>
 </div>
+
+<h1>Welcome, {{username}}!</h1>
 <section>
   <p>{{bio}}</p>
 </section>
+
 <section id="overview" class="container-fluid mt-5">
     <h2>Overview</h2>
     {{#if habits.[0]}}
-<div>   
-  <canvas id="myChart"></canvas>
-</div>
+      <div>   
+        <canvas id="myChart"></canvas>
+      </div>
     {{else}}
       <p>No habits yet - add some habits to start tracking!</p>
-{{/if}}
-
+    {{/if}}
 </section>
+
 <section id="habits" class="container-fluid mt-5">
-    <h2>Habits</h2>
-{{#if habits.[0]}}
-{{#each habits}}
-{{#unless this.groupOfUsers.[0]}}
-<div class="habit-section">
-<form action="/habits/{{_id}}" method="POST">
-  <div class="mb-3 habit-title">
-   <a href="/showhabit/{{id}}">
-    <h3>{{this.title}}</h3>
-   </a>
+  <h2>Habits</h2>
+  {{#if habits.[0]}}
+
+  {{#each habits}}
+
+  {{#unless this.groupOfUsers.[0]}}
+  {{!-- if the habit doesn't belong to a group, display it here --}}
+  <div class="habit-section">
+  <form action="/habits/{{_id}}" method="POST">
+    <div class="mb-3 habit-title">
+    <a href="/showhabit/{{id}}">
+      <h3>{{this.title}}</h3>
+    </a>
+    </div>
+    {{#if checked}}
+    <button type="submit" disabled="true" class="btn btn-disabled" onclick="style.display = 'none'">Done!</button>
+    {{else}}
+    <button type="submit" class="btn btn-primary" onclick="style.display = 'none'">Done!</button>
+    {{/if}}
+  </form>
+
+  {{!-- Table to display current week progress (bootstrap) --}}
+  <table class="table caption-top w-50 weekly-progress">
+    <thead>
+      <tr>
+        <th scope="col-.5">M</th>
+        <th scope="col-.5">T</th>
+        <th scope="col-1">W</th>
+        <th scope="col-1">T</th>
+        <th scope="col-1">F</th>
+        <th scope="col-1">S</th>
+        <th scope="col-1">S</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {{#each this.tableArray}}
+        {{#if this}}
+        <td><div class="circle fill-circle"></div></td>
+        {{else}}
+        <td><div class="circle"></div></td>
+        {{/if}}
+        {{/each}}
+      </tr>
+    </tbody>
+  </table>
+
   </div>
-{{#if checked}}
-<button type="submit" disabled="true" class="btn btn-disabled" onclick="style.display = 'none'">Done!</button>
-{{else}}
-  <button type="submit" class="btn btn-primary" onclick="style.display = 'none'">Done!</button>
+  {{else}}
+        <p>No habits yet - add some habits to start tracking!</p>
   {{/if}}
-</form>
-
-{{!-- Table to display current week progress (bootstrap) --}}
-
-<table class="table caption-top w-50 weekly-progress">
-  {{!-- <caption>Current week progress</caption> --}}
-  <thead>
-    <tr>
-      <th scope="col-.5">M</th>
-      <th scope="col-.5">T</th>
-      <th scope="col-1">W</th>
-      <th scope="col-1">T</th>
-      <th scope="col-1">F</th>
-      <th scope="col-1">S</th>
-      <th scope="col-1">S</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      {{#each this.tableArray}}
-      {{#if this}}
-      <td><div class="circle fill-circle"></div></td>
-      {{else}}
-      <td><div class="circle"></div></td>
-      {{/if}}
-      {{/each}}
-    </tr>
-  </tbody>
-</table>
-
-</div>
-{{else}}
-      <p>No habits yet - add some habits to start tracking!</p>
-{{/if}}
-</section>
 {{/unless}}
 {{/each}}
+</section>
 
 <section id="groups" class="container-fluid mt-5">
     <h2>Groups</h2>
@@ -131,7 +132,6 @@
 </section>
 {{/if}}
 {{/each}}
-
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -139,8 +139,7 @@
 <script>
   const ctx = document.getElementById('myChart');
 
-
- // const user = require("../routes/user.routes")
+  // const user = require("../routes/user.routes")
   //console.log(user.arrayTest)
 
   axios.get("https://cheqq.fly.dev/getChartData")
@@ -172,8 +171,5 @@
       }
     }
   });
-
-  })
-
-  
+}) 
 </script>
