@@ -108,7 +108,22 @@ img.img-thumbnail{
   background-color: rgb(192, 255, 234);
 }
 
-#floatingSelect{
+.habit-section {
+  background-color: beige;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: space-between;
+}
+
+.habit-title {
+  width: 160px;
+  margin: 30px;
+  margin-left: 0;
+}
+
+
+#mySelect{
   width: 300px;
 }
 

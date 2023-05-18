@@ -1,0 +1,10 @@
+<h1>{{title}}</h1>
+<p>{{description}}</p>
+
+<form action="/{{_id}}/edit">
+<button type="submit" class="btn btn-primary">Update habit</button>
+</form>
+
+<form action="/delete/{{_id}}" method="POST">
+<button type="submit" class="btn btn-danger">Delete habit</button>
+</form>
