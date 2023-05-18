@@ -12,7 +12,10 @@
 </section>
 <section id="overview" class="container-fluid mt-5">
     <h2>Overview</h2>
-    
+<div>   
+  <canvas id="myChart"></canvas>
+</div>
+
 </section>
 <section id="habits" class="container-fluid mt-5">
     <h2>Habits</h2>
@@ -62,3 +65,47 @@
     <h2>Groups</h2>
 
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('myChart');
+
+
+ // const user = require("../routes/user.routes")
+  //console.log(user.arrayTest)
+
+  axios.get("http://localhost:3000/getChartData")
+  .then(({data}) => {
+    new Chart(ctx, {
+    type: 'polarArea',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: '# of Votes',
+        data: data.dates,
+        borderWidth: 1,
+        backgroundColor: [
+      'rgba(255, 99, 122, 0.5)',
+      'rgb(255, 160, 30, 0.5)',
+      'rgb(255, 235, 106, 0.7)',
+      'rgb(74, 207, 145, 0.5)',
+      'rgb(54, 162, 235, 0.5)',
+      'rgb(22, 32, 168, 0.5)',
+      'rgb(104, 48, 156, 0.5)'
+      ]
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  })
+
+  
+</script>
