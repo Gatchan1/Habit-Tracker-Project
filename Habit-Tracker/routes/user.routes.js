@@ -104,7 +104,11 @@ router.get("/habit/create", isLoggedIn, (req, res, next) => {
 router.post("/habit/create", isLoggedIn, (req, res, next) => {
   const { title, description } = req.body;
   let groupOfUsers = []
-  if (req.body.groupOfUsers) {
+  //if we only add one user, it will be retrieved as a string, but if we add more than one it will be an array (typeof = object)
+  if (req.body.groupOfUsers && typeof req.body.groupOfUsers == "string") {
+    groupOfUsers = [req.body.groupOfUsers]
+  }
+  if (req.body.groupOfUsers && typeof req.body.groupOfUsers == "object") {
     groupOfUsers = req.body.groupOfUsers
   }
 
@@ -119,14 +123,16 @@ router.post("/habit/create", isLoggedIn, (req, res, next) => {
   Habit.create(newHabit) // create the habit for current user
     .then((habit) => {
       console.log("New habit saved:", habit);
-      return User.findByIdAndUpdate(req.session.currentUser._id, { $push: { habits: habit._id } });
+      return User.findByIdAndUpdate(req.session.currentUser._id, { $push: { habits: habit._id } }); // Connect habit to User document
     })
     .then(() => { // create a copy of the habit for the people chosen in the group
       if (req.body.groupOfUsers) {
+        console.log("groupOfUsers: ", groupOfUsers)
 
         for (let i = 0; i < groupOfUsers.length; i++) {
 
           let externalUser = groupOfUsers[i]
+          console.log("un user del grupo?: ", externalUser)
 
           let newHabitUsers = []
           for (let j = 0; j < groupOfUsers.length; j++) {
@@ -140,16 +146,17 @@ router.post("/habit/create", isLoggedIn, (req, res, next) => {
             title,
             userId: externalUser,
             description,
-            datesCompleted,
+            datesCompleted: [],
             groupOfUsers: newHabitUsers
           }
 
-          console.log("newExternalHabit: ", i, newExternalHabit)
-       
-
-
-        }
-       
+          Habit.create(newExternalHabit) // Connect habit to User document
+          .then((habit) => {
+            return User.findByIdAndUpdate(habit.userId, { $push: { habits: habit._id } });
+          })
+          .then(() => console.log("Group habit completely created"))
+          .catch((err) => next(err))
+        }       
       }
     })
     .then(() => {
