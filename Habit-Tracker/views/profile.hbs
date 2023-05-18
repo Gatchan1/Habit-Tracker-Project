@@ -25,6 +25,7 @@
     <h2>Habits</h2>
 {{#if habits.[0]}}
 {{#each habits}}
+{{#unless this.groupOfUsers.[0]}}
 <div class="habit-section">
 <form action="/habits/{{_id}}" method="POST">
   <div class="mb-3 habit-title">
@@ -67,12 +68,13 @@
   </tbody>
 </table>
 
-{{/each}}
 </div>
 {{else}}
       <p>No habits yet - add some habits to start tracking!</p>
 {{/if}}
 </section>
+{{/unless}}
+{{/each}}
 
 <section id="groups" class="container-fluid mt-5">
     <h2>Groups</h2>
@@ -81,6 +83,55 @@
 {{else}}
       <p>You haven't joined any group yet</p>
 {{/if}}
+{{#each habits}}
+{{#if this.groupOfUsers.[0]}}
+<div class="habit-section">
+<form action="/habits/{{_id}}" method="POST">
+  <div class="mb-3 habit-title">
+   <a href="/showhabit/{{id}}">
+    <h3>{{this.title}}</h3>
+   </a>
+  </div>
+{{#if checked}}
+<button type="submit" disabled="true" class="btn btn-disabled" onclick="style.display = 'none'">Done!</button>
+{{else}}
+  <button type="submit" class="btn btn-primary" onclick="style.display = 'none'">Done!</button>
+  {{/if}}
+</form>
+
+{{!-- Table to display current week progress (bootstrap) --}}
+
+<table class="table caption-top w-50 weekly-progress">
+  {{!-- <caption>Current week progress</caption> --}}
+  <thead>
+    <tr>
+      <th scope="col-.5">M</th>
+      <th scope="col-.5">T</th>
+      <th scope="col-1">W</th>
+      <th scope="col-1">T</th>
+      <th scope="col-1">F</th>
+      <th scope="col-1">S</th>
+      <th scope="col-1">S</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {{#each this.tableArray}}
+      {{#if this}}
+      <td><div class="circle fill-circle"></div></td>
+      {{else}}
+      <td><div class="circle"></div></td>
+      {{/if}}
+      {{/each}}
+    </tr>
+  </tbody>
+</table>
+
+</div>
+</section>
+{{/if}}
+{{/each}}
+
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -92,7 +143,7 @@
  // const user = require("../routes/user.routes")
   //console.log(user.arrayTest)
 
-  axios.get("http://localhost:3000/getChartData")
+  axios.get("https://cheqq.fly.dev/getChartData")
   .then(({data}) => {
     new Chart(ctx, {
     type: 'polarArea',
