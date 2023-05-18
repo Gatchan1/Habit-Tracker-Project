@@ -119,17 +119,7 @@ router.post("/habit/create", isLoggedIn, (req, res, next) => {
       return User.findByIdAndUpdate(req.session.currentUser._id, { $push: { habits: habit._id}})
        })
 
-  User.find()
-    .then((users) => {
-      const data = {};
-      data.users = users;
-      return Habit.create(newHabit);
-    })
-
-    .then((habit) => {
-      console.log("New habit saved:", habit);
-      return User.findByIdAndUpdate(req.session.currentUser._id, { $push: { habits: habit._id } });
-    })
+  
     .then((resp) => {
       return User.find();
     })
@@ -163,7 +153,7 @@ router.post("/profile/edit", isLoggedIn, upload.single("image"), (req, res, next
     username: req.body.username,
     email: req.body.email,
     bio: req.body.bio,
-    profilePic: req.file.path,
+    profilePic: req.file
   };
   console.log("###################", req.file);
   User.findOneAndUpdate({ _id: req.session.currentUser }, editProfile, { new: true })

@@ -1,17 +1,17 @@
 
 <h1>Create a new habit!</h1>
-<div class="createForm">
+<section class="container">
 <form action="/habit/create" method="POST">
-<label>Habit title
+<label><h3>Habit title</h3>
 <input type="text" name="title" placeholder="">
 </label>
 <br>
-<label>Description of your habit
+<label><h3>Description of your habit</h3>
 <input type="text" name="description" placeholder="" class="descriptionHabit">
 </label>
 <br>
 
-<label class="selector">Do you want to add users to your habit?  
+<label class="selector"><h3>Do you want to add users to your habit?</h3>
   <select class="form-select" id="floatingSelect" aria-label="Floating label select example" multiple>
    {{#each users}}
     <option id="option" class="option" value="{{this._id}}" selected>{{this.username}}</option>
@@ -23,4 +23,4 @@
 <br>
 <button type="submit" class="createHabit">Create</button>
 </form>
-</div>
+</section>

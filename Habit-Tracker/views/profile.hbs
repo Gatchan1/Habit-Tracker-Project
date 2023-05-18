@@ -1,16 +1,18 @@
 
-    <div class="profileTop">
+<div class="profile">
+    <div class="imgProfile">
     <img src="{{profilePic}}" class="img-thumbnail" alt="profile photo">
      <figcaption class="figure-caption">
         <a href="/profile/edit">Edit profile</a></figcaption>
     </div>
-
+    <div class="descProfile">
     <h1>Welcome, {{username}}!</h1>
+    <section>
+     <p>{{bio}}</p>
+    </section>
+    </div>
 </div>
-<section>
-  <p>{{bio}}</p>
-</section>
-<section id="overview" class="container-fluid mt-5">
+<section id="overview">
     <h2>Overview</h2>
 <div>   
   <canvas id="myChart"></canvas>
@@ -25,7 +27,7 @@
 <form action="/habits/{{_id}}" method="POST">
   <div class="mb-3 habit-title">
    <a href="/showhabit/{{id}}">
-    <h3>{{this.title}}</h3>
+    <h5>{{this.title}}</h5>
    </a>
   </div>
 {{#if checked}}
@@ -37,12 +39,12 @@
 
 {{!-- Table to display current week progress (bootstrap) --}}
 
-<table class="table caption-top w-50 weekly-progress">
+<table class="table caption-top w-50 weekly-progress" >
   {{!-- <caption>Current week progress</caption> --}}
   <thead>
     <tr>
-      <th scope="col-.5">M</th>
-      <th scope="col-.5">T</th>
+      <th scope="col-1">M</th>
+      <th scope="col-1">T</th>
       <th scope="col-1">W</th>
       <th scope="col-1">T</th>
       <th scope="col-1">F</th>

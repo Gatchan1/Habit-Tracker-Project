@@ -1,11 +1,13 @@
-    {{!-- <div class="col-sm-6 profileimg"> --}}
-    <img src="images/default.png" class="img-thumbnail" alt="profile photo">
-     <figcaption class="figure-caption">
-        <a href="#">No Friends</a>
+<div class="profile">
+    <div class="imgProfile">
+    <img src="{{profilePic}}" class="img-thumbnail" alt="profile photo">
     </div>
-    {{!-- replace image with {{profilephoto}}, once user model is updated --}}
-
+    <div class="descProfile">
     <h1>{{username}}</h1>
+    <section>
+     <p>{{bio}}</p>
+    </section>
+    </div>
 </div>
 <section id="bio" class="container-fluid mt-5">
     {{bio}}
