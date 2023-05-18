@@ -78,7 +78,7 @@ router.get("/getChartData", (req, res, next) => {
         }
       }
 
-      //WE could also put an if so that the first 6 days OF THE YEAR behave different
+      //We should also put an if so that the first 6 days OF THE YEAR behave different
       // console.log("chartData:", chartData);
 
       let chartDataFormatted = {
