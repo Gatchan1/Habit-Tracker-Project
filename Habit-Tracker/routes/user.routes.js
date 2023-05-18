@@ -100,13 +100,13 @@ router.get("/habit/create", isLoggedIn, (req, res, next) => {
 // POST
 router.post("/habit/create", isLoggedIn, (req, res, next) => {
   const { title, description } = req.body;
-  let groupOfUsers = []
+  let groupOfUsers = [];
   //if we only add one user, it will be retrieved as a string, but if we add more than one it will be an array (typeof = object)
   if (req.body.groupOfUsers && typeof req.body.groupOfUsers == "string") {
-    groupOfUsers = [req.body.groupOfUsers]
+    groupOfUsers = [req.body.groupOfUsers];
   }
   if (req.body.groupOfUsers && typeof req.body.groupOfUsers == "object") {
-    groupOfUsers = req.body.groupOfUsers
+    groupOfUsers = req.body.groupOfUsers;
   }
 
   const newHabit = {
@@ -122,38 +122,38 @@ router.post("/habit/create", isLoggedIn, (req, res, next) => {
       console.log("New habit saved:", habit);
       return User.findByIdAndUpdate(req.session.currentUser._id, { $push: { habits: habit._id } }); // Connect habit to User document
     })
-    .then(() => { // create a copy of the habit for the people chosen in the group
+    .then(() => {
+      // create a copy of the habit for the people chosen in the group
       if (req.body.groupOfUsers) {
-        console.log("groupOfUsers: ", groupOfUsers)
+        console.log("groupOfUsers: ", groupOfUsers);
 
         for (let i = 0; i < groupOfUsers.length; i++) {
+          let externalUser = groupOfUsers[i];
+          console.log("un user del grupo?: ", externalUser);
 
-          let externalUser = groupOfUsers[i]
-          console.log("un user del grupo?: ", externalUser)
-
-          let newHabitUsers = []
+          let newHabitUsers = [];
           for (let j = 0; j < groupOfUsers.length; j++) {
             if (groupOfUsers[j] != externalUser) {
-              newHabitUsers.push(groupOfUsers[j])
+              newHabitUsers.push(groupOfUsers[j]);
             }
           }
-          newHabitUsers.push(req.session.currentUser._id)
+          newHabitUsers.push(req.session.currentUser._id);
 
           let newExternalHabit = {
             title,
             userId: externalUser,
             description,
             datesCompleted: [],
-            groupOfUsers: newHabitUsers
-          }
+            groupOfUsers: newHabitUsers,
+          };
 
           Habit.create(newExternalHabit) // Connect habit to User document
-          .then((habit) => {
-            return User.findByIdAndUpdate(habit.userId, { $push: { habits: habit._id } });
-          })
-          .then(() => console.log("Group habit completely created"))
-          .catch((err) => next(err))
-        }       
+            .then((habit) => {
+              return User.findByIdAndUpdate(habit.userId, { $push: { habits: habit._id } });
+            })
+            .then(() => console.log("Group habit completely created"))
+            .catch((err) => next(err));
+        }
       }
     })
     .then(() => {
@@ -177,27 +177,22 @@ router.get("/profile/edit", isLoggedIn, (req, res, next) => {
 });
 
 //EDIT PROFILE POST
-router.post(
-  "/profile/edit",
-  isLoggedIn,
-  upload.single("image"),
-  (req, res, next) => {
-    const editProfile = {
-      username: req.body.username,
-      email: req.body.email,
-      bio: req.body.bio,
-      profilePic: req.file.path,
-    };
-    User.findOneAndUpdate({ _id: req.session.currentUser }, editProfile, {
-      new: true,
+router.post("/profile/edit", isLoggedIn, upload.single("image"), (req, res, next) => {
+  const editProfile = {
+    username: req.body.username,
+    email: req.body.email,
+    bio: req.body.bio,
+    profilePic: req.file.path,
+  };
+  User.findOneAndUpdate({ _id: req.session.currentUser }, editProfile, {
+    new: true,
+  })
+    .then(() => {
+      res.redirect("/profile");
     })
-      .then(() => {
-        res.redirect("/profile");
-      })
 
-      .catch((err) => next(err));
-  }
-);
+    .catch((err) => next(err));
+});
 
 //POST BUTTON LOG HABIT
 router.post("/habits/:habitId", (req, res, next) => {
@@ -207,11 +202,7 @@ router.post("/habits/:habitId", (req, res, next) => {
       let datesCompleted = habit.datesCompleted;
       let now = DateTime.now().toISODate();
       datesCompleted.push(now);
-      return Habit.findByIdAndUpdate(
-        habitId,
-        { datesCompleted },
-        { new: true }
-      );
+      return Habit.findByIdAndUpdate(habitId, { datesCompleted }, { new: true });
     })
     .then((updatedHabit) => {
       console.log(updatedHabit);
@@ -226,57 +217,55 @@ router.get("/:username", (req, res, next) => {
   User.findOne({ username })
     .populate("habits")
     .then((user) => {
-      user.habits.forEach(habit => {
-        if(habit.groupOfUsers.includes(req.session.currentUser._id)){
-          habit.joined = true
+      user.habits.forEach((habit) => {
+        if (habit.groupOfUsers.includes(req.session.currentUser._id)) {
+          habit.joined = true;
         }
-      })
-      console.log('############', user.habits)
+      });
+      console.log("############", user.habits);
       res.render("public-profile", user);
     })
     .catch((err) => next(err));
 });
 
 //PUBLIC PROFILE JOIN HABIT BUTTON POST
-router.post('/:userId/join/:habitId', (req, res, next) => {
+router.post("/:userId/join/:habitId", (req, res, next) => {
   let { habitId, userId } = req.params;
-  currentUserId = req.session.currentUser._id
+  currentUserId = req.session.currentUser._id;
   //push current user id to original habbit
   Habit.findById(habitId)
-  .then(habit => {
-    let userGroup = habit.groupOfUsers;
-    userGroup.push(currentUserId)
-   return Habit.findByIdAndUpdate(habitId, { groupOfUsers: userGroup }, { new: true })
-  })
-  //copy the habit to the current user with the id of the original user
-  .then (habitUpdated => {
-    console.log('#################should have hanna id ', habitUpdated)
-    let {description, title} = habitUpdated;
-    let habitCopy = {
-      title,
-      userId: currentUserId,
-      description,
-      datesCompleted: [],
-      groupOfUsers: [userId],
-    }
-    return Habit.create(habitCopy);
-  })
-  //Add the habit id of the copied habit to the current user
-  .then(copiedHabit =>{
-    let {_id} = copiedHabit;
-    return User.findByIdAndUpdate(currentUserId, {$push: {habits: _id}
+    .then((habit) => {
+      let userGroup = habit.groupOfUsers;
+      userGroup.push(currentUserId);
+      return Habit.findByIdAndUpdate(habitId, { groupOfUsers: userGroup }, { new: true });
     })
-  })
-  .then(result => {
-    //get username of the original user to render their profile again
-    return User.findById(userId);
-  })
-  .then(user => {
-    let {username} = user;
-    res.redirect(`/${username}`)
-  })
-})
-
+    //copy the habit to the current user with the id of the original user
+    .then((habitUpdated) => {
+      console.log("#################should have hanna id ", habitUpdated);
+      let { description, title } = habitUpdated;
+      let habitCopy = {
+        title,
+        userId: currentUserId,
+        description,
+        datesCompleted: [],
+        groupOfUsers: [userId],
+      };
+      return Habit.create(habitCopy);
+    })
+    //Add the habit id of the copied habit to the current user
+    .then((copiedHabit) => {
+      let { _id } = copiedHabit;
+      return User.findByIdAndUpdate(currentUserId, { $push: { habits: _id } });
+    })
+    .then((result) => {
+      //get username of the original user to render their profile again
+      return User.findById(userId);
+    })
+    .then((user) => {
+      let { username } = user;
+      res.redirect(`/${username}`);
+    });
+});
 
 //HABBIT ROUTE
 router.get("/showhabit/:habitId", (req, res, next) => {
@@ -312,7 +301,43 @@ router.post("/:habitId/edit", isLoggedIn, (req, res, next) => {
 //DELETE HABIT
 router.post("/delete/:habitId", isLoggedIn, (req, res, next) => {
   let { habitId } = req.params;
-  Habit.findByIdAndDelete(habitId)
+  Habit.findById(habitId)
+    .populate("groupOfUsers")
+    .then((habit) => {
+      console.log(habit);
+      console.log("array of habits of first user:", habit.groupOfUsers[0].habits);
+
+      for (let i = 0; i < habit.groupOfUsers.length; i++) {
+          let originalUser = habit.userId;
+          // console.log("un user del grupo?: ", externalUser);
+
+          // let newHabitUsers = [];
+          // for (let j = 0; j < groupOfUsers.length; j++) {
+          //   if (habit.groupOfUsers[j] != externalUser) {
+          //     newHabitUsers.push(habit.groupOfUsers[j]);
+          //   }
+          // }
+          // newHabitUsers.push(req.session.currentUser._id);
+
+          // let newExternalHabit = {
+          //   title,
+          //   userId: externalUser,
+          //   description,
+          //   datesCompleted: [],
+          //   groupOfUsers: newHabitUsers,
+          // };
+
+          // Habit.create(newExternalHabit) 
+          //   .then((habit) => {
+          //     return User.findByIdAndUpdate(habit.userId, { $push: { habits: habit._id } });
+          //   })
+          //   .then(() => console.log("Group habit completely created"))
+          //   .catch((err) => next(err));
+      }
+    })
+    // .then(() => {
+    //   return Habit.findByIdAndDelete(habitId);
+    // })
     .then((habit) => {
       res.redirect("/profile");
     })
