@@ -15,9 +15,9 @@
 </label> --}}
 <br>
 <label>Do you want to add users to your habit?
-<select id="mySelect" multiple>
+<select name="groupOfUsers" multiple>
    {{#each users}}
-  <option value="{{this.username}}">{{this.username}}</option>
+  <option value="{{this._id}}">{{this.username}}</option>
    {{/each}}
 </select>
 </label>
