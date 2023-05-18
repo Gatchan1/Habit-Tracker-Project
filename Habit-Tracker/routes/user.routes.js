@@ -152,7 +152,7 @@ router.post("/habits/:habitId", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-//Route to other users' public profiles
+//Route to other users' PUBLIC PROFILES
 router.get('/:username', (req, res, next) => {
    let {username} = req.params;
     User.findOne({username})
@@ -161,6 +161,47 @@ router.get('/:username', (req, res, next) => {
     })
     .catch((err) => next(err));
 });
+
+//HABBIT ROUTE
+router.get('/showhabit/:habitId', (req, res, next) => {
+  let {habitId} = req.params
+  Habit.findOne({_id: habitId})
+  .then((habit) => {
+    res.render('habit', habit);
+  })
+  .catch((err) => next(err));
+})
+
+//EDIT HABIT GET
+router.get("/:habitId/edit", isLoggedIn, (req, res, next) => {
+  let {habitId} = req.params
+  Habit.findOne({_id: habitId})
+.then(habit => {
+  res.render("edit-habit", habit);
+})
+.catch(err => next(err))
+});
+
+
+
+//EDIT HABIT POST
+router.post("/:habitId/edit", isLoggedIn, (req, res, next) => {
+  const { title, description } = req.body;
+  console.log('##################', title, description)
+  let {habitId} = req.params
+  Habit.findByIdAndUpdate( habitId, {title, description}, {new: true})
+  .then(habit => {
+   res.redirect('/profile')
+  })
+  .catch(err => next(err))
+});
+
+
+
+
+
+
+
 
 ////////////   TEST ROUTES!!!! only for testing   //////////////////////////
 

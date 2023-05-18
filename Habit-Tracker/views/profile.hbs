@@ -20,8 +20,10 @@
 {{#each habits}}
 <div class="habit-section">
 <form action="/habits/{{_id}}" method="POST">
-  <div class="mb-3">
-   <h3>{{this.title}}</h3>
+  <div class="mb-3 habit-title">
+   <a href="/showhabit/{{id}}">
+    <h3>{{this.title}}</h3>
+   </a>
   </div>
 {{#if checked}}
 <button type="submit" disabled="true" class="btn btn-disabled" onclick="style.display = 'none'">Done!</button>
