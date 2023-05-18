@@ -1,7 +1,15 @@
-<img src="{{profilePic}}" class="img-thumbnail" alt="profile photo">
-<h1>{{username}}</h1>
-
-<section id="user-bio" class="container-fluid mt-5">
+<div class="profile">
+    <div class="imgProfile">
+    <img src="{{profilePic}}" class="img-thumbnail" alt="profile photo">
+    </div>
+    <div class="descProfile">
+    <h1>{{username}}</h1>
+    <section>
+     <p>{{bio}}</p>
+    </section>
+    </div>
+</div>
+<section id="bio" class="container-fluid mt-5">
     {{bio}}
 </section>
 

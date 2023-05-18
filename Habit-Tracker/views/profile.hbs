@@ -1,16 +1,18 @@
 
-<div class="profileTop">
-  <img src="{{profilePic}}" class="img-thumbnail" alt="profile photo">
-  <figcaption class="figure-caption">
-  <a href="/profile/edit">Edit profile</a></figcaption>
+<div class="profile">
+    <div class="imgProfile">
+    <img src="{{profilePic}}" class="img-thumbnail" alt="profile photo">
+     <figcaption class="figure-caption">
+        <a href="/profile/edit">Edit profile</a></figcaption>
+    </div>
+    <div class="descProfile">
+    <h1>Welcome, {{username}}!</h1>
+    <section class="section">
+     <p>{{bio}}</p>
+    </section>
+    </div>
 </div>
-
-<h1>Welcome, {{username}}!</h1>
-<section>
-  <p>{{bio}}</p>
-</section>
-
-<section id="overview" class="container-fluid mt-5">
+<section id="overview">
     <h2>Overview</h2>
     {{#if habits.[0]}}
       <div>   
@@ -22,64 +24,53 @@
 </section>
 
 <section id="habits" class="container-fluid mt-5">
-  <h2>Habits</h2>
-  {{#if habits.[0]}}
-
-  {{#each habits}}
-
-  {{#unless this.groupOfUsers.[0]}}
-  {{!-- if the habit doesn't belong to a group, display it here --}}
-  <div class="habit-section">
-  <form action="/habits/{{_id}}" method="POST">
-    <div class="mb-3 habit-title">
-    <a href="/showhabit/{{id}}">
-      <h3>{{this.title}}</h3>
-    </a>
-    </div>
-    {{#if checked}}
-    <button type="submit" disabled="true" class="btn btn-disabled" onclick="style.display = 'none'">Done!</button>
-    {{else}}
-    <button type="submit" class="btn btn-primary" onclick="style.display = 'none'">Done!</button>
-    {{/if}}
-  </form>
-
-  {{!-- Table to display current week progress (bootstrap) --}}
-  <table class="table caption-top w-50 weekly-progress">
-    <thead>
-      <tr>
-        <th scope="col-.5">M</th>
-        <th scope="col-.5">T</th>
-        <th scope="col-1">W</th>
-        <th scope="col-1">T</th>
-        <th scope="col-1">F</th>
-        <th scope="col-1">S</th>
-        <th scope="col-1">S</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        {{#each this.tableArray}}
-        {{#if this}}
-        <td><div class="circle fill-circle"></div></td>
-        {{else}}
-        <td><div class="circle"></div></td>
-        {{/if}}
-        {{/each}}
-      </tr>
-    </tbody>
-  </table>
-
+    <h2 class="habits">Habits</h2>
+{{#each habits}}
+{{#unless this.groupOfUsers.[0]}}
+<div class="habit-section">
+<form action="/habits/{{_id}}" method="POST">
+  <div class="mb-3 habit-title">
+   <a href="/showhabit/{{id}}">
+    <h5>{{this.title}}</h5>
+   </a>
   </div>
   {{else}}
         <p>No habits yet - add some habits to start tracking!</p>
   {{/if}}
+</form>
+<table class="table caption-top w-50 weekly-progress" >
+  <thead>
+    <tr>
+      <th scope="col-1">M</th>
+      <th scope="col-1">T</th>
+      <th scope="col-1">W</th>
+      <th scope="col-1">T</th>
+      <th scope="col-1">F</th>
+      <th scope="col-1">S</th>
+      <th scope="col-1">S</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {{#each this.tableArray}}
+      {{#if this}}
+      <td><div class="circle fill-circle"></div></td>
+      {{else}}
+      <td><div class="circle"></div></td>
+      {{/if}}
+      {{/each}}
+    </tr>
+  </tbody>
+</table>
+
+</div>
+</section>
 {{/unless}}
 {{/each}}
 </section>
 
-<section id="groups" class="container-fluid mt-5">
-    <h2>Groups</h2>
-{{#if habits.groupOfUsers.[0]}}
+<section id="groups" class="container">
+    <h2 class="groups">Groups</h2>
 
 {{else}}
       <p>You haven't joined any group yet</p>
