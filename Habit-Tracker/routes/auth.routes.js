@@ -262,7 +262,7 @@ router.post("/forgot-password", isLoggedOut, (req, res, next) => {
   })
   .then(info => console.log(info))    
   .then(() => {
-    res.redirect("/login")
+    res.render("auth/wait-for-email", { layout: "/layout2" })
   })
   .catch((error) => next(error))
 
