@@ -301,43 +301,7 @@ router.post("/:habitId/edit", isLoggedIn, (req, res, next) => {
 //DELETE HABIT
 router.post("/delete/:habitId", isLoggedIn, (req, res, next) => {
   let { habitId } = req.params;
-  Habit.findById(habitId)
-    .populate("groupOfUsers")
-    .then((habit) => {
-      console.log(habit);
-      console.log("array of habits of first user:", habit.groupOfUsers[0].habits);
-
-      for (let i = 0; i < habit.groupOfUsers.length; i++) {
-          let originalUser = habit.userId;
-          // console.log("un user del grupo?: ", externalUser);
-
-          // let newHabitUsers = [];
-          // for (let j = 0; j < groupOfUsers.length; j++) {
-          //   if (habit.groupOfUsers[j] != externalUser) {
-          //     newHabitUsers.push(habit.groupOfUsers[j]);
-          //   }
-          // }
-          // newHabitUsers.push(req.session.currentUser._id);
-
-          // let newExternalHabit = {
-          //   title,
-          //   userId: externalUser,
-          //   description,
-          //   datesCompleted: [],
-          //   groupOfUsers: newHabitUsers,
-          // };
-
-          // Habit.create(newExternalHabit) 
-          //   .then((habit) => {
-          //     return User.findByIdAndUpdate(habit.userId, { $push: { habits: habit._id } });
-          //   })
-          //   .then(() => console.log("Group habit completely created"))
-          //   .catch((err) => next(err));
-      }
-    })
-    // .then(() => {
-    //   return Habit.findByIdAndDelete(habitId);
-    // })
+  Habit.findByIdAndDelete(habitId)
     .then((habit) => {
       res.redirect("/profile");
     })
