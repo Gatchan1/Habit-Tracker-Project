@@ -21,9 +21,12 @@
     <h2>Habits</h2>
 
 {{#each habits}}
+<div class="habit-section">
 <form action="/habits/{{_id}}" method="POST">
-  <div class="mb-3">
-   <h3>{{this.title}}</h3>
+  <div class="mb-3 habit-title">
+   <a href="/showhabit/{{id}}">
+    <h3>{{this.title}}</h3>
+   </a>
   </div>
 {{#if checked}}
 <button type="submit" disabled="true" class="btn btn-disabled" onclick="style.display = 'none'">Done!</button>
@@ -32,8 +35,10 @@
   {{/if}}
 </form>
 
+{{!-- Table to display current week progress (bootstrap) --}}
+
 <table class="table caption-top w-50 weekly-progress">
-  <caption>Current week progress</caption>
+  {{!-- <caption>Current week progress</caption> --}}
   <thead>
     <tr>
       <th scope="col-.5">M</th>
@@ -59,6 +64,7 @@
 </table>
 
 {{/each}}
+</div>
 </section>
 
 <section id="groups" class="container-fluid mt-5">
