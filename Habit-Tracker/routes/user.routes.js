@@ -224,7 +224,7 @@ router.get('/:username', (req, res, next) => {
     .catch((err) => next(err));
 });
 
-//HABBIT ROUTE
+//HABIT ROUTE
 router.get('/showhabit/:habitId', (req, res, next) => {
   let {habitId} = req.params
   Habit.findOne({_id: habitId})
@@ -258,7 +258,13 @@ router.post("/:habitId/edit", isLoggedIn, (req, res, next) => {
 //DELETE HABIT
 router.post('/delete/:habitId', isLoggedIn, (req, res, next) => {
   let {habitId} = req.params
-  Habit.findByIdAndDelete(habitId)
+  Habit.findById(habitId)
+  .then((habit) => {
+
+  })
+  .then((habit) => {
+    return Habit.findByIdAndDelete(habitId)
+  })
   .then(habit => {
     res.redirect('/profile')
   })
