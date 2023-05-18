@@ -7,7 +7,7 @@
     </div>
     <div class="descProfile">
     <h1>Welcome, {{username}}!</h1>
-    <section>
+    <section class="section">
      <p>{{bio}}</p>
     </section>
     </div>
@@ -20,8 +20,7 @@
 
 </section>
 <section id="habits" class="container-fluid mt-5">
-    <h2>Habits</h2>
-
+    <h2 class="habits">Habits</h2>
 {{#each habits}}
 {{#unless this.groupOfUsers.[0]}}
 <div class="habit-section">
@@ -37,11 +36,7 @@
   <button type="submit" class="btn btn-primary" onclick="style.display = 'none'">Done!</button>
   {{/if}}
 </form>
-
-{{!-- Table to display current week progress (bootstrap) --}}
-
 <table class="table caption-top w-50 weekly-progress" >
-  {{!-- <caption>Current week progress</caption> --}}
   <thead>
     <tr>
       <th scope="col-1">M</th>
@@ -71,8 +66,8 @@
 {{/unless}}
 {{/each}}
 
-<section id="groups" class="container-fluid mt-5">
-    <h2>Groups</h2>
+<section id="groups" class="container">
+    <h2 class="groups">Groups</h2>
 
 {{#each habits}}
 {{#if this.groupOfUsers.[0]}}

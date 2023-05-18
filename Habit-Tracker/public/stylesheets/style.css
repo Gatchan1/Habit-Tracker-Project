@@ -72,10 +72,32 @@ h1 {
   margin-bottom: 10px;
 }
 
-section {
+.section {
   background-color: #fff;
   padding: 20px;
   border-radius: 5px;
+}
+.habits{
+  margin-left: 130px;
+}
+
+.groups{
+  margin-left: 130px;
+  width: 954px;
+}
+
+.habit-section{
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 30px 120px;
+}
+.mt-5{
+  margin 0;
+}
+section#groups.container{
+  padding: 0;
+  margin: 0;
 }
 
 h2 {
@@ -90,20 +112,11 @@ h2 {
   margin-bottom: 30px;
 }
 
-.container-fluid {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
-}
 .container {
   max-width: 800px;
-  margin: 40px auto;
   padding: 40px;
 }
 
-.habit-section {
-  margin-bottom: 20px;
-}
 
 .habit-title a {
   color: #333;
