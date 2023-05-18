@@ -182,12 +182,9 @@ router.get("/:habitId/edit", isLoggedIn, (req, res, next) => {
 .catch(err => next(err))
 });
 
-
-
 //EDIT HABIT POST
 router.post("/:habitId/edit", isLoggedIn, (req, res, next) => {
   const { title, description } = req.body;
-  console.log('##################', title, description)
   let {habitId} = req.params
   Habit.findByIdAndUpdate( habitId, {title, description}, {new: true})
   .then(habit => {
@@ -196,6 +193,15 @@ router.post("/:habitId/edit", isLoggedIn, (req, res, next) => {
   .catch(err => next(err))
 });
 
+//DELETE HABIT
+router.post('/delete/:habitId', isLoggedIn, (req, res, next) => {
+  let {habitId} = req.params
+  Habit.findByIdAndDelete(habitId)
+  .then(habit => {
+    res.redirect('/profile')
+  })
+  .catch(err => next(err))
+})
 
 
 
