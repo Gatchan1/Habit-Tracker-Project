@@ -1,6 +1,6 @@
 <div id="form">
   <h2>Sign Up</h2>
-  <form action="/signup" method="POST">
+  <form action="/signup" method="POST" class="container signup-form">
 
     <label> Username
       <input type="text" name="username" placeholder="Your username" value="{{username}}"/>
@@ -19,7 +19,7 @@
     </label>
 <p></p>
    
-    <button type="submit">Sign Up</button>
+    <button type="submit" class="signup">SIGN UP</button>
 
 
     {{#if errorMessage}}

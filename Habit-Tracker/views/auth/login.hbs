@@ -1,6 +1,6 @@
 <div id="login-form">
   <h2>Log In</h2>
-  <form action="/login" method="POST">
+  <form action="/login" method="POST" class="signup-form container">
 
     <label> Username
       <input type="text" name="username" placeholder="Your username" />
@@ -10,7 +10,7 @@
       <input type="password" name="password" placeholder="Your password" />
     </label>
 <p></p>
-    <button type="submit">Log In</button>
+    <button type="submit" class="signup">LOG IN</button>
 
 
     {{#if errorMessage}}

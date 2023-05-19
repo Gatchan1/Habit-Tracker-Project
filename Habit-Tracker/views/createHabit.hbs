@@ -2,24 +2,21 @@
 <h1>Create a new habit!</h1>
 <section class="container">
 <form action="/habit/create" method="POST">
-<label><h3>Habit title</h3>
+<label><h3>Habit title:</h3>
 <input type="text" name="title" placeholder="">
 </label>
 <br>
-<label><h3>Description of your habit</h3>
-<input type="text" name="description" placeholder="" class="descriptionHabit">
+<label><h3>Description of your habit:</h3>
+<input type="text" name="description" placeholder="" class="descriptionHabit" size="50">
 </label>
 <br>
-<label>Do you want to add users to your habit?
+<label><h3>Do you want to add users to your habit?</h3></label>
 <select name="groupOfUsers" multiple>
    {{#each users}}
   <option value="{{this._id}}">{{this.username}}</option>
    {{/each}}
   </select>
-</label>
-<label class="selected">Selected users
-</label>
 <br>
-<button type="submit" class="createHabit">Create</button>
+<button type="submit" class="createHabit btn-primary">CREATE</button>
 </form>
 </section>
