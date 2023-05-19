@@ -1,17 +1,17 @@
 <h2>Edit profile</h2>
 
-<form action="/profile/edit" method="post" enctype="multipart/form-data">
+<form action="/profile/edit" method="post" class="container edit-form" enctype="multipart/form-data">
 
-<label for="username">Username</label>
+<label for="username" class="edit-form">Username</label>
 <input type="text" name="username" id="username" value="{{user.username}}">
 <br>
-<label for="email">e-mail</label>
-<input type="email" name="email" id="email" value="{{user.email}}">
+<label for="email" class="edit-form">e-mail</label>
+<input type="email" name="email" id="email" value="{{user.email}}" size="30">
 <br>
-<label for="bio">Bio</label>
+<label for="bio" class="edit-form">Bio</label>
 <textarea name="bio" id="bio" rows="10" cols="30" placeholder="You can write down anything here and other users will be able to see it.">{{user.bio}}</textarea>
 <br>
-<label> Profile image
+<label class="edit-form"> Profile image
       <input type="file" name="image" placeholder="Your image"/>
 </label>
 <button type="submit" class="editProfile">Update</button>

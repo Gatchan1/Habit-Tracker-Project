@@ -103,7 +103,7 @@ h1 {
   margin: 30px 120px;
 }
 .mt-5{
-  margin 0;
+  margin: 0;
 }
 section#groups.container{
   padding: 0;
@@ -308,4 +308,53 @@ button.signup{
 .signYlogin {
   font-size: 20px;
   margin-top: 10px;
+}
+
+.edit-form{
+  font-size: 20px;
+  max-width: 520px;
+  padding: 40px;
+  background-color: white;
+  border-radius: 5px;
+  margin: auto;
+}
+
+button.editProfile{
+  margin-top: 3px;
+  letter-spacing: 1px;
+  padding: 10px;
+  background-color: #99A98F;
+  color: white;
+  border-radius: 5px;
+  border-color: #99A98F;
+  border-style: none;
+}
+ label.edit-form{
+  margin: 15px;
+  padding: 0;
+ }
+
+ a.forgot{
+  color: #99A98F;
+  font-size: 15px;
+ }
+
+ .forgotPass{
+  font-size: 20px;
+  max-width: 500px;
+  padding: 40px;
+  background-color: white;
+  border-radius: 5px;
+  margin: auto;
+ }
+
+ button.forgotP{
+  margin-top: 3px;
+  letter-spacing: 1px;
+  padding: 10px;
+  background-color: #99A98F;
+  color: white;
+  border-radius: 5px;
+  border-color: #99A98F;
+  border-style: none;
 }
