@@ -283,21 +283,34 @@ router.get("/grouphabit/:habitId", (req, res, next) => {
   console.log("req.params: ", req.params);
   let groupData = []
   Habit.findById(habitId)
+  .populate("userId")
     .then((habit) => {
       groupData.push(habit);
-      return Habit.find({ groupOfUsers: habit.userId });
-    })
-    .then((habits) => {
-      habits.forEach((habit) => {
-        if (habit.title == groupData[0].title) {
-          groupData.push(habit)
-        }
-      });
-      console.log("groupData:", groupData)
-      
+      Habit.find({ groupOfUsers: habit.userId })
+      .populate("userId")
+      .then((habits) => {
+        habits.forEach((habit) => {
+          if (habit.title == groupData[0].title) {
+            groupData.push(habit)
+          }
+        });
+        console.log("groupData:", groupData) 
+
+        let transformedGroupData = groupData.map((hab) => {          
+          hab.tableArray = tableArray(hab);
+          console.log ("transformed habit: ",hab.tableArray)
+
+        })
+
+
+        
+        res.render("groupHabit", {groupData});
+        
+      })
+      .catch((err) => next(err));
     })
     .then(() => {
-      res.render("groupHabit", {groupData});
+      console.log("hola")
     })
     .catch((err) => next(err));
 });

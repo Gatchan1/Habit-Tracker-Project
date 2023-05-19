@@ -1,3 +1,35 @@
 
 <h1>{{groupData.[0].title}}</h1>
 
+<p>Description: {{groupData.[0].description}}</p>
+
+{{!-- HABIT CURRENT WEEK TABLE FOR CURRENT USER--}}
+{{#each groupData}}
+
+{{this.userId.username}}
+
+<table class="table caption-top w-50 weekly-progress" >
+  <thead>
+    <tr>
+      <th scope="col-1">M</th>
+      <th scope="col-1">T</th>
+      <th scope="col-1">W</th>
+      <th scope="col-1">T</th>
+      <th scope="col-1">F</th>
+      <th scope="col-1">S</th>
+      <th scope="col-1">S</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {{#each this.tableArray}}
+      {{#if this}}
+      <td><div class="circle fill-circle"></div></td>
+      {{else}}
+      <td><div class="circle"></div></td>
+      {{/if}}
+      {{/each}}
+    </tr>
+  </tbody>
+</table>
+{{/each}}
