@@ -336,4 +336,14 @@ router.post("/search", (req, res, next) => {
     });
 });
 
+
+//GROUP ROUTE
+router.get('/group/:habitId', (req, res, next) => {
+  let {_id} = req.params;
+  Habit.findById(_id)
+  .then((habit) => {
+    res.render('groupHabit', habit);
+  })
+})
+
 module.exports = router;
