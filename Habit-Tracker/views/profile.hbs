@@ -20,7 +20,7 @@
 
 </section>
 <section id="habits" class="container-fluid mt-5">
-    <h2 class="habits">Habits</h2>
+    <h2 class="habits">Habits</h2> {{!----------------- HABITS -------------------}} 
 {{#each habits}}
 {{#unless this.groupOfUsers.[0]}}
 <div class="habit-section">
@@ -74,7 +74,7 @@
 <div class="habit-section">
 <form action="/habits/{{_id}}" method="POST">
   <div class="mb-3 habit-title">
-   <a href="/showhabit/{{id}}">
+   <a href="/grouphabit/{{id}}">
     <h3>{{this.title}}</h3>
    </a>
   </div>

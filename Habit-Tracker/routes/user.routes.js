@@ -267,12 +267,37 @@ router.post("/:userId/join/:habitId", (req, res, next) => {
     });
 });
 
-//HABBIT ROUTE
+//HABIT ROUTE
 router.get("/showhabit/:habitId", (req, res, next) => {
   let { habitId } = req.params;
   Habit.findOne({ _id: habitId })
     .then((habit) => {
       res.render("habit", habit);
+    })
+    .catch((err) => next(err));
+});
+
+//GROUP ROUTE
+router.get("/grouphabit/:habitId", (req, res, next) => {
+  let { habitId } = req.params;
+  console.log("req.params: ", req.params);
+  let groupData = []
+  Habit.findById(habitId)
+    .then((habit) => {
+      groupData.push(habit);
+      return Habit.find({ groupOfUsers: habit.userId });
+    })
+    .then((habits) => {
+      habits.forEach((habit) => {
+        if (habit.title == groupData[0].title) {
+          groupData.push(habit)
+        }
+      });
+      console.log("groupData:", groupData)
+      
+    })
+    .then(() => {
+      res.render("groupHabit", {groupData});
     })
     .catch((err) => next(err));
 });
