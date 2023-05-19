@@ -22,7 +22,7 @@ const userSchema = new Schema(
     bio: String,
     profilePic: {
       type: String,
-      default: "/images/default.png"
+      default: "https://res.cloudinary.com/dqzjo5wsl/image/upload/v1684481335/habit-pics/tbeshupek9snljclqogf.png"
     },
     habits: [{ type: Schema.Types.ObjectId, ref: "Habit"}],
     friends: [{ type: Schema.Types.ObjectId, ref: "User"}],

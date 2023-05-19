@@ -89,7 +89,15 @@
 <section id="groups" class="container">
     <h2 class="groups">Groups</h2>
 {{#if this.groupOfUsers.[0]}}
-
+<div class="habit-section">
+<form action="/habits/{{_id}}" method="POST">
+  <div class="mb-3 habit-title">
+   <a href="/grouphabit/{{id}}">
+    <h3>{{this.title}}</h3>
+   </a>
+  </div>
+{{#if checked}}
+<button type="submit" disabled="true" class="btn btn-disabled" onclick="style.display = 'none'">Done!</button>
 {{else}}
       <p>You haven't joined any group yet</p>
 {{/if}}
