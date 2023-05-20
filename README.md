@@ -82,27 +82,23 @@ private: boolean
 | :----: | :----------------: | :-----------------------------------------: | :---------------------------------------: |
 |  GET   |     /              |                                             |               Loads homepage              |
 |  GET   |  /signup           |                                             |               Loads Sign Up               |
-|  POST  |  /signup           | const {username, password, passwordRepeat,  |   Register user and redirects to /login   |
-|        |                    |            email} = req.body                |                                           |
+|  POST  |  /signup           | const {username, password, passwordRepeat, email} = req.body  |   Register user and redirects to /login   |
 |  GET   |  /login            |                                             |                Loads Login                |
 |  POST  |  /login            |    const {username, password} = req.body    |  Logs a user in and redirects to profile  |
 |  GET   |      /logout       |                                             | Elliminates req.session & redirects to "/"|
 |  GET   |  /forgot-password  |                                             |  Loads form page for requesting password  |
 |  POST  |  /forgot-password  |         const {username} = req.body         |    Sends email for password retrieval     |
 |  GET   |/:userId/new-password|                                            | Loads form page for entering new password |
-|  POST  |/:userId/new-password|      const {userId} = req.params;          |  Updates password and redirects to login  |
-|        |                    | const {password, passwordRepeat} = req.body |                                           |
+|  POST  |/:userId/new-password|      const {userId} = req.params; const {password, passwordRepeat} = req.body          |  Updates password and redirects to login  |
 |  GET   |      /profile      |           req.session.currentUser           |    Shows the user profile (with graph)    |
 |  GET   |    /getChartData   |     prepares user habits data for graph     |                                           |
 |  GET   |    /profile/edit   |            req.session.currentUser          |         Shows form to change profile      |
-|  POST  |    /profile/edit   |  const {username, email, bio, profilePic} = | Updates profile and redirects to profile  |
-|        |                    |                 req.params                  |                                           |
+|  POST  |    /profile/edit   |  const {username, email, bio, profilePic} = req.params | Updates profile and redirects to profile  |
 |  GET   |   /habit/create    |                                             |        Shows form to create a habit       |
 |  POST  |   /habit/create    |   const { title, description } = req.body   |  Creates habit and redirects to profile   |
 |  GET   |/showhabit/:habitId |          let { habitId } = req.params       | Displays links for edit and delete routes |
 |  GET   |   /:habitId/edit   |          let { habitId } = req.params       |         Displays edit habit form          |
-|  POST  |   /:habitId/edit   |    const { title, description } = req.body; |   Updates habit and redirects to profile  |
-|        |                    |        let { habitId } = req.params         |                                           |
+|  POST  |   /:habitId/edit   | const { title, description } = req.body; let { habitId } = req.params|   Updates habit and redirects to profile  |
 |  POST  |  /delete/:habitId  |        let { habitId } = req.params         |               Deletes habit               |
 |  POST  |      /search       |                                             |  redirects to found user's public profile |
 |  GET   |     /:username     |        let { username } = req.params        |      shows a user's public profile        |
