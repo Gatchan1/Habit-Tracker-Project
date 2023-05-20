@@ -119,17 +119,15 @@ router.post("/habit/create", isLoggedIn, (req, res, next) => {
 
   Habit.create(newHabit) // create the habit for current user
     .then((habit) => {
-      console.log("New habit saved:", habit);
+      // console.log("New habit saved:", habit);
       return User.findByIdAndUpdate(req.session.currentUser._id, { $push: { habits: habit._id } }); // Connect habit to User document
     })
     .then(() => {
       // create a copy of the habit for the people chosen in the group
       if (req.body.groupOfUsers) {
-        console.log("groupOfUsers: ", groupOfUsers);
 
         for (let i = 0; i < groupOfUsers.length; i++) {
           let externalUser = groupOfUsers[i];
-          console.log("un user del grupo?: ", externalUser);
 
           let newHabitUsers = [];
           for (let j = 0; j < groupOfUsers.length; j++) {
@@ -205,7 +203,7 @@ router.post("/habits/:habitId", (req, res, next) => {
       return Habit.findByIdAndUpdate(habitId, { datesCompleted }, { new: true });
     })
     .then((updatedHabit) => {
-      console.log(updatedHabit);
+      // console.log(updatedHabit);
       res.redirect("/profile");
     })
     .catch((err) => next(err));
@@ -222,7 +220,6 @@ router.get("/:username", (req, res, next) => {
           habit.joined = true;
         }
       });
-      console.log("############", user.habits);
       res.render("public-profile", user);
     })
     .catch((err) => next(err));
@@ -241,7 +238,6 @@ router.post("/:userId/join/:habitId", (req, res, next) => {
     })
     //copy the habit to the current user with the id of the original user
     .then((habitUpdated) => {
-      console.log("#################should have hanna id ", habitUpdated);
       let { description, title } = habitUpdated;
       let habitCopy = {
         title,
@@ -280,7 +276,7 @@ router.get("/showhabit/:habitId", (req, res, next) => {
 //GROUP ROUTE
 router.get("/grouphabit/:habitId", (req, res, next) => {
   let { habitId } = req.params;
-  console.log("req.params: ", req.params);
+  // console.log("req.params: ", req.params);
   let groupData = []
   Habit.findById(habitId)
   .populate("userId")
@@ -298,11 +294,8 @@ router.get("/grouphabit/:habitId", (req, res, next) => {
 
         let transformedGroupData = groupData.map((hab) => {          
           hab.tableArray = tableArray(hab);
-          console.log ("transformed habit: ",hab.tableArray)
-
+          // console.log ("transformed habit: ",hab.tableArray)
         })
-
-
         
         res.render("groupHabit", {groupData});
         
@@ -310,7 +303,7 @@ router.get("/grouphabit/:habitId", (req, res, next) => {
       .catch((err) => next(err));
     })
     .then(() => {
-      console.log("hola")
+      console.log("grouphabit")
     })
     .catch((err) => next(err));
 });

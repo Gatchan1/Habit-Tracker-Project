@@ -17,26 +17,6 @@ const User = require("../models/User.model");
 const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
-// const multer = require('multer');
-// const cloudinary = require('cloudinary').v2
-
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET
-// });
-
-// const storage = new CloudinaryStorage({
-//   cloudinary: cloudinary,
-//   params: {
-//     folder: 'cloudinary-test',
-//     allowed_formats: ['jpg', 'png', 'jpeg', 'webp']
-//   },
-// });
-
-// // const upload = multer ({dest: './public/uploads'})
-// const upload = multer ({storage})
-
 // GET /auth/signup
 router.get("/signup", isLoggedOut, (req, res) => {
   res.render("auth/signup", { layout: "/layout2" });

@@ -1,20 +1,20 @@
 # Project_name
 
-The project is a habit tracker that also has functions of a social network. Users can create an account, create/choose a selection of habits that they want to create on a daily basis and check off completed habits each day.
+The project is a habit tracker app that also has functions of a social network. Users can create an account, create/choose a selection of habits that they want to create on a daily basis and check off completed habits each day. The app is called cheqq.
 
 ## About us
 
 We are a team of three students fully invested in a Web Development bootcamp in Barcelona. Our names are Camila Buldin, Lisa Schwetlick and Raquel Barrio.
 
-![Project Image](https://assets.website-files.com/5c755d7d6fa90e6b6027e74c/642fe45b20446d4f867135fb_%D0%A1over.jpg "Project Image")
+![Project Image](https://res.cloudinary.com/dqzjo5wsl/image/upload/v1684598525/cheqq_fxe44g.png "Project Image")
 
 ## Deployment
 
-You can check the app fully deployed [here](https://be.green/es/blog/guia-de-cuidado-de-los-cactus/).
+You can check the app fully deployed [here](https://cheqq.fly.dev/).
 
 ## Work structure
 
-We developed this project using [Trello](https://trello.com/home) to organize our workflow.
+We used Discord to send us any interesting links and keep each other posted about any news, but mainly we organised everything face to face.
 
 ## Installation guide
 
@@ -53,7 +53,7 @@ required: true
 
 bio: { type: String, default: ''}
 
-profilePhoto: { type: String, default: default.png },
+profilePic: { type: String, default: default.png },
 
 habits: {[ type: schema.Types.ObjectID, ref: "Habit" ]}
 
@@ -69,7 +69,7 @@ title: { type: String, required: true },
 
 user: { type: schema.Types.ObjectID, ref: "User" },
 
-datescompleted: {[Date]},
+datescompleted: [{ type: String }],
 
 groupOfUsers: {[ type: schema.Types.ObjectID, ref: "User" ]}
 
@@ -78,25 +78,44 @@ private: boolean
 
 ## Routes
 
-## Routes
-
 | Metodo | endPoint           |                Requiere                     |                  Accion                   |
 | :----: | :----------------: | :-----------------------------------------: | :---------------------------------------: |
-|  GET   |     /              |                                             |               Carga el home               |
-|  GET   |  /singup           |                                             |             Carga el Sign Up              |
-|  POST  |  /singup           | const {username, password, email} = req.body| Register the user and redirects to /login |
-|  GET   |  /login            |                                             |              Carga el Log in              |
-|  POST  |  /login            |    const {username, password} = req.body    |   Logs a user in and redirects to home    |
-|  GET   | /:username/profile |         const {username} = req.params       |          Shows the users profile          |
-|  GET   | /:username/profile/edit |   const {username} = req.params        |         Shows form to change profile      |
-|  POST  | /:username/profile |       const {username} = req.params         | Updates profile and redirects to profile  |
-|  GET   | /habit/create      |                                             |        Shows form to create a habit       |
-|  POST  | /habit/create      |                                             |  Creates habit and redirects to profile   |
-|  GET   | /:id/groupHabit    |             const {id} = req.params         |       Shows group habits                  |
-|  GET   | /search            |                                             |  shows form to search for other users     |
+|  GET   |     /              |                                             |               Loads homepage              |
+|  GET   |  /signup           |                                             |               Loads Sign Up               |
+|  POST  |  /signup           | const {username, password, passwordRepeat,  |   Register user and redirects to /login   |
+|        |                    |            email} = req.body                |                                           |
+|  GET   |  /login            |                                             |                Loads Login                |
+|  POST  |  /login            |    const {username, password} = req.body    |  Logs a user in and redirects to profile  |
+|  GET   |      /logout       |                                             | Elliminates req.session & redirects to "/"|
+|  GET   |  /forgot-password  |                                             |  Loads form page for requesting password  |
+|  POST  |  /forgot-password  |         const {username} = req.body         |    Sends email for password retrieval     |
+|  GET   |/:userId/new-password|                                            | Loads form page for entering new password |
+|  POST  |/:userId/new-password|      const {userId} = req.params;          |  Updates password and redirects to login  |
+|        |                    | const {password, passwordRepeat} = req.body |                                           |
+|  GET   |      /profile      |           req.session.currentUser           |    Shows the user profile (with graph)    |
+|  GET   |    /getChartData   |     prepares user habits data for graph     |                                           |
+|  GET   |    /profile/edit   |            req.session.currentUser          |         Shows form to change profile      |
+|  POST  |    /profile/edit   |  const {username, email, bio, profilePic} = | Updates profile and redirects to profile  |
+|        |                    |                 req.params                  |                                           |
+|  GET   |   /habit/create    |                                             |        Shows form to create a habit       |
+|  POST  |   /habit/create    |   const { title, description } = req.body   |  Creates habit and redirects to profile   |
+|  GET   |/showhabit/:habitId |          let { habitId } = req.params       | Displays links for edit and delete routes |
+|  GET   |   /:habitId/edit   |          let { habitId } = req.params       |         Displays edit habit form          |
+|  POST  |   /:habitId/edit   |    const { title, description } = req.body; |   Updates habit and redirects to profile  |
+|        |                    |        let { habitId } = req.params         |                                           |
+|  POST  |  /delete/:habitId  |        let { habitId } = req.params         |               Deletes habit               |
+|  POST  |      /search       |                                             |  redirects to found user's public profile |
+|  GET   |     /:username     |        let { username } = req.params        |      shows a user's public profile        |
+|  POST  |/:userId/join/:habitId|   let { habitId, userId } = req.params    |creates new habit copy and updates the other|
+|  GET   |/grouphabit/:habitId|         let { habitId } = req.params        |          Shows group shared habit         |
+|  POST  |  /habits/:habitId  |       let habitId = req.params.habitId      |Updates habit as completed for current date|
 
 ## API
 
-This project consumes this [API](https://api.chucknorris.io/) to make some random phrases appear in the home page.
+This project mimics an API through an internal route so that we can fetch the json data through axios and display it through a chart.js graph.
+
+## Nodemailer
+
+We use nodemailer for sending an email welcoming each user after signup, and also safe password retrieval is thoroughly implemented thanks to email sending.
 
 ---
