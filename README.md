@@ -8,7 +8,7 @@ There are graphs showing your progress, both in the current week and across the 
 
 We are a team of three students fully invested in a Web Development bootcamp in Barcelona. Our names are Camila Buldin, Lisa Schwetlick and Raquel Barrio.
 
-![Project Image](https://res.cloudinary.com/dqzjo5wsl/image/upload/v1684598525/cheqq_fxe44g.png "Project Image")
+![Project Image](https://res.cloudinary.com/dqzjo5wsl/image/upload/v1689328762/cheqq_valjxz.png "Project Image")
 
 ## Deployment
 
