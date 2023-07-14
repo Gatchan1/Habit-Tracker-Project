@@ -1,6 +1,8 @@
 # Project_name
 
-The project is a habit tracker app that also has functions of a social network. Users can create an account, create/choose a selection of habits that they want to create on a daily basis and check off completed habits each day. The app is called cheqq.
+The project is a habit tracker app that also has functions of a social network. Users can create an account, create/choose a selection of habits that they want to participate in and check off completed habits each day. The app is called Cheqq.
+
+There are graphs showing your progress, both in the current week and across the last seven natural days.
 
 ## About us
 
