@@ -247,7 +247,7 @@ router.post("/forgot-password", isLoggedOut, (req, res, next) => {
       <p>click this link in order to create a new password, and after that you will be able to log in again. Keep up your habit tracking!</p>
       <p>Cheers,</p><p>Cheqq Team</p>
       
-      <a href="https://cheqq.fly.dev/${user[0]._id}/new-password">Set new password</a>`
+      <a href="https://cheqq-habit.fly.dev/${user[0]._id}/new-password">Set new password</a>`
     }) 
   })
   .then(info => console.log(info))    
