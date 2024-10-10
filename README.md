@@ -12,7 +12,7 @@ We are a team of three students fully invested in a Web Development bootcamp in 
 
 ## Deployment
 
-You can check the app fully deployed [here](https://cheqq.fly.dev/).
+You can check the app fully deployed [here](https://cheqq-habit.fly.dev/).
 
 ## Work structure
 
